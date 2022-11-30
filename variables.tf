@@ -101,7 +101,7 @@ variable "tre_out_subscribers" {
   }))
 }
 
-variable "var.tre_permission_boundary_arn" {
+variable "tre_permission_boundary_arn" {
   description = "ARN of the TRE permission boundary policy"
   type = string
 }

@@ -157,8 +157,3 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
     resources = ["*"]
   }
 }
-
-variable "var.tre_permission_boundary_arn" {
-  description = "ARN of the TRE permission boundary policy"
-  type = string
-}
