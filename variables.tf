@@ -100,3 +100,8 @@ variable "tre_out_subscribers" {
     endpoint_arn = list(string)
   }))
 }
+
+variable "var.tre_permission_boundary_arn" {
+  description = "ARN of the TRE permission boundary policy"
+  type = string
+}

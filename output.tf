@@ -18,15 +18,6 @@ output "common_tre_out_topic_arn" {
   description = "Common TRE out topic arn"
 }
 
-# output "tre_forward_lambda_arn" {
-#   value       = aws_iam_role.tre_forward_lambda_role.arn
-#   description = "TRE Forward Lambda Role ARN"
-# }
-
-# output "tre_forward_queue_arn" {
-#   value       = aws_sqs_queue.tre_forward.arn
-#   description = "TRE Forward SQS Queue ARN"
-# }
 
 output "tre_dlq_alerts_lambda_function_name" {
   value       = aws_lambda_function.tre_dlq_slack_alerts.function_name

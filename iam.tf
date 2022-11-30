@@ -76,6 +76,7 @@ data "aws_iam_policy_document" "tre_internal_topic_policy" {
 resource "aws_iam_role" "common_tre_slack_alerts_lambda_role" {
   name               = "${var.env}-${var.prefix}-common-slack-alerts-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  permissions_boundary = var.tre_permission_boundary_arn
 }
 
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
@@ -94,24 +95,10 @@ resource "aws_iam_role_policy_attachment" "common_tre_slack_alerts_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
-# resource "aws_iam_role" "tre_forward_lambda_role" {
-#   name               = "${var.env}-${var.prefix}-forward-lambda-role"
-#   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-# }
-
-# resource "aws_iam_role_policy_attachment" "tre_forward_lambda_sqs_exec_policy" {
-#   role       = aws_iam_role.tre_forward_lambda_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
-# }
-
-# resource "aws_iam_role_policy_attachment" "tre_forward_lambda_xray_policy" {
-#   role       = aws_iam_role.tre_forward_lambda_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
-# }
-
 resource "aws_iam_role" "tre_dlq_alerts_lambda" {
   name               = "${var.env}-${var.prefix}-dlq-alerts-lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  permissions_boundary = var.tre_permission_boundary_arn
 }
 
 resource "aws_iam_role_policy_attachment" "tre_dlq_alerts_lambda" {
@@ -137,26 +124,6 @@ data "aws_iam_policy_document" "common_tre_data_bucket" {
     resources = ["${aws_s3_bucket.common_tre_data.arn}/*", aws_s3_bucket.common_tre_data.arn]
   }
 }
-
-# SQS Policy
-
-# data "aws_iam_policy_document" "tre_forward_queue" {
-#   statement {
-#     actions = ["sqs:SendMessage"]
-#     effect  = "Allow"
-
-#     principals {
-#       type = "Service"
-#       identifiers = [
-#         "sns.amazonaws.com"
-#       ]
-#     }
-
-#     resources = [
-#       aws_sqs_queue.tre_forward.arn
-#     ]
-#   }
-# }
 
 # KMS Key Policy
 
@@ -189,4 +156,9 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
 
     resources = ["*"]
   }
+}
+
+variable "var.tre_permission_boundary_arn" {
+  description = "ARN of the TRE permission boundary policy"
+  type = string
 }
