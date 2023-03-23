@@ -77,10 +77,11 @@ variable "tre_in_subscriptions" {
 variable "tre_internal_subscriptions" {
   description = "List tre-internal topic subscriptions"
   type = list(object({
-    name          = string
-    endpoint      = string
-    filter_policy = any
-    protocol      = string
+    name                = string
+    endpoint            = string
+    filter_policy       = any
+    filter_policy_scope = string
+    protocol            = string
   }))
 }
 
