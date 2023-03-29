@@ -68,9 +68,11 @@ variable "tre_out_publishers" {
 variable "tre_in_subscriptions" {
   description = "List tre-in topic subscriptions"
   type = list(object({
-    name     = string
-    endpoint = string
-    protocol = string
+    name                = string
+    endpoint            = string
+    filter_policy       = any
+    filter_policy_scope = string
+    protocol            = string
   }))
 }
 
