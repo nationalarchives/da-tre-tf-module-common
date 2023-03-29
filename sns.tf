@@ -27,10 +27,12 @@ resource "aws_sns_topic_policy" "tre_in" {
 }
 
 resource "aws_sns_topic_subscription" "tre_in" {
-  for_each  = { for sub in var.tre_in_subscriptions : sub.name => sub }
-  topic_arn = aws_sns_topic.tre_in.arn
-  protocol  = each.value.protocol
-  endpoint  = each.value.endpoint
+  for_each            = { for sub in var.tre_in_subscriptions : sub.name => sub }
+  topic_arn           = aws_sns_topic.tre_in.arn
+  protocol            = each.value.protocol
+  endpoint            = each.value.endpoint
+  filter_policy       = each.value.filter_policy
+  filter_policy_scope = each.value.filter_policy_scope
 }
 
 # TRE Internal SNS Topic
