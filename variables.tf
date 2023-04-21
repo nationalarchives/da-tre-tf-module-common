@@ -90,9 +90,13 @@ variable "tre_internal_subscriptions" {
 variable "tre_out_subscriptions" {
   description = "List tre-out topic subscriptions"
   type = list(object({
-    name     = string
-    endpoint = string
-    protocol = string
+    name                  = string
+    endpoint              = string
+    protocol              = string
+    filter_policy         = any
+    filter_policy_scope   = string
+    raw_message_delivery  = bool
+    subscription_role_arn = string
   }))
 }
 
@@ -106,15 +110,15 @@ variable "tre_out_subscribers" {
 
 variable "tre_permission_boundary_arn" {
   description = "ARN of the TRE permission boundary policy"
-  type = string
+  type        = string
 }
 
 variable "ecr_uri_host" {
   description = "The hostname part of the management account ECR repository; e.g. ACCOUNT.dkr.ecr.REGION.amazonaws.com"
-  type = string
+  type        = string
 }
 
 variable "ecr_uri_repo_prefix" {
   description = "The prefix for Docker image repository names to use; e.g. foo/ in ACCOUNT.dkr.ecr.REGION.amazonaws.com/foo/tre-bar"
-  type = string
+  type        = string
 }
