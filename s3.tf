@@ -7,11 +7,6 @@ resource "aws_s3_bucket_policy" "common_tre_data" {
   policy = data.aws_iam_policy_document.common_tre_data_bucket.json
 }
 
-resource "aws_s3_bucket_acl" "common_tre_data" {
-  bucket = aws_s3_bucket.common_tre_data.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_server_side_encryption_configuration" "common_tre_data" {
   bucket = aws_s3_bucket.common_tre_data.id
   rule {

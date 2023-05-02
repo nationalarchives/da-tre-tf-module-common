@@ -74,8 +74,8 @@ data "aws_iam_policy_document" "tre_internal_topic_policy" {
 # Lambda Policies
 
 resource "aws_iam_role" "common_tre_slack_alerts_lambda_role" {
-  name               = "${var.env}-${var.prefix}-common-slack-alerts-lambda-role"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  name                 = "${var.env}-${var.prefix}-common-slack-alerts-lambda-role"
+  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
@@ -96,8 +96,8 @@ resource "aws_iam_role_policy_attachment" "common_tre_slack_alerts_policy" {
 }
 
 resource "aws_iam_role" "tre_dlq_alerts_lambda" {
-  name               = "${var.env}-${var.prefix}-dlq-alerts-lambda"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  name                 = "${var.env}-${var.prefix}-dlq-alerts-lambda"
+  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
