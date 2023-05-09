@@ -13,15 +13,18 @@ data "aws_iam_policy_document" "common_tre_slack_alerts_sns_topic_policy" {
 }
 
 data "aws_iam_policy_document" "tre_in_topic_policy" {
-  statement {
-    sid     = "TRE-InPublishers"
-    actions = ["sns:Publish"]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = var.tre_in_publishers
+  dynamic "statement" {
+    for_each = var.tre_in_publishers
+    content {
+      sid     = statement.value["sid"]
+      actions = ["sns:Publish"]
+      effect  = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = statement.value["principal_identifier"]
+      }
+      resources = [aws_sns_topic.tre_in.arn]
     }
-    resources = [aws_sns_topic.tre_in.arn]
   }
 }
 
