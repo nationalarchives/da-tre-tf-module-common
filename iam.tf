@@ -144,19 +144,20 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
     resources = ["*"]
   }
 
-  statement {
-    sid = "Allow use of the key"
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey*"
-    ]
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = var.tre_in_publishers
+  dynamic "statement" {
+    for_each = var.tre_in_publishers
+    content {
+      sid     = statement.value["sid"]
+      actions = [
+        "kms:Decrypt",
+        "kms:GenerateDataKey*"
+      ]
+      effect = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = statement.value["principal_identifier"]
+      }
+      resources = ["*"]
     }
-
-    resources = ["*"]
   }
-}
+ }
