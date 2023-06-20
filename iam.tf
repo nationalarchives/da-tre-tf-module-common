@@ -187,7 +187,7 @@ data "aws_iam_policy_document" "tre_out_sns_kms_key" {
       effect = "Allow"
       principals {
         type        = "AWS"
-        identifiers = [statement.value["subscriber"]]
+        identifiers = statement.value["subscriber"]
       }
       resources = ["*"]
     }
