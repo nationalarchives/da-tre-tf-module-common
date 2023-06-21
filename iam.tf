@@ -161,3 +161,35 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
     }
   }
  }
+
+data "aws_iam_policy_document" "tre_out_sns_kms_key" {
+  statement {
+    sid     = "Allow access for Key Administrators"
+    actions = ["kms:*"]
+    effect  = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${var.account_id}:root"]
+    }
+
+    resources = ["*"]
+  }
+
+  dynamic "statement" {
+    for_each = var.tre_out_subscribers
+    content {
+      sid     = statement.value["sid"]
+      actions = [
+        "kms:Decrypt",
+        "kms:GenerateDataKey*"
+      ]
+      effect = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = statement.value["subscriber"]
+      }
+      resources = ["*"]
+    }
+  }
+}
