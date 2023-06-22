@@ -18,6 +18,10 @@ output "common_tre_out_topic_arn" {
   description = "Common TRE out topic arn"
 }
 
+output "common_tre_out_topic_kms_arn" {
+  value       = aws_kms_key.tre_out_sns.arn
+  description = "Common TRE out topic kms arn"
+}
 
 output "tre_dlq_alerts_lambda_function_name" {
   value       = aws_lambda_function.tre_dlq_slack_alerts.function_name
