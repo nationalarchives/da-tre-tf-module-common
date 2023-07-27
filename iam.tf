@@ -110,7 +110,7 @@ resource "aws_iam_role_policy_attachment" "tre_dlq_alerts_lambda" {
 }
 
 resource "aws_iam_role" "tre_success_handler_lambda" {
-  name               = "${var.env}-${var.prefix}-tre-success-handler-role"
+  name               = "${var.env}-${var.prefix}-success-handler-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
   permissions_boundary = var.tre_permission_boundary_arn
 }
