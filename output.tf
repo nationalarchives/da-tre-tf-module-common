@@ -27,3 +27,13 @@ output "tre_dlq_alerts_lambda_function_name" {
   value       = aws_lambda_function.tre_dlq_slack_alerts.function_name
   description = "TRE DLQ Alerts Lambda Function Name"
 }
+
+output "success_handler_lambda_role_arn" {
+  value       = aws_iam_role.tre_success_handler_lambda.arn
+  description = "Success handler Lambda Role ARN"
+}
+
+output "success_handler_lambda_arn" {
+  value       = aws_lambda_function.tre_success_handler.arn
+  description = "Success handler Lambda ARN"
+}
