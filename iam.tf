@@ -109,16 +109,16 @@ resource "aws_iam_role_policy_attachment" "tre_dlq_alerts_lambda" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
 }
 
-resource "aws_iam_role" "tre_success_handler_lambda" {
-  name               = "${var.env}-${var.prefix}-success-handler-role"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-  permissions_boundary = var.tre_permission_boundary_arn
-}
+#resource "aws_iam_role" "tre_success_handler_lambda" {
+#  name               = "${var.env}-${var.prefix}-success-handler-role"
+#  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+#  permissions_boundary = var.tre_permission_boundary_arn
+#}
 
-resource "aws_iam_role_policy_attachment" "tre_success_lambda_logs" {
-  role       = aws_iam_role.tre_success_handler_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
-}
+#resource "aws_iam_role_policy_attachment" "tre_success_lambda_logs" {
+#  role       = aws_iam_role.tre_success_handler_lambda.name
+#  policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
+#}
 
 
 # S3 Policy
