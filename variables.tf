@@ -52,8 +52,8 @@ variable "slack_username" {
 
 variable "tre_in_publishers" {
   type = list(object({
-    sid                   = string
-    principal_identifier  = list(string)
+    sid                  = string
+    principal_identifier = list(string)
   }))
 }
 

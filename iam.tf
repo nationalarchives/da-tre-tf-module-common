@@ -110,8 +110,8 @@ resource "aws_iam_role_policy_attachment" "tre_dlq_alerts_lambda" {
 }
 
 resource "aws_iam_role" "tre_success_handler_lambda" {
-  name               = "${var.env}-${var.prefix}-success-handler-role"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  name                 = "${var.env}-${var.prefix}-success-handler-role"
+  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
@@ -159,7 +159,7 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
   dynamic "statement" {
     for_each = var.tre_in_publishers
     content {
-      sid     = statement.value["sid"]
+      sid = statement.value["sid"]
       actions = [
         "kms:Decrypt",
         "kms:GenerateDataKey*"
@@ -172,7 +172,7 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
       resources = ["*"]
     }
   }
- }
+}
 
 data "aws_iam_policy_document" "tre_out_sns_kms_key" {
   statement {
@@ -191,7 +191,7 @@ data "aws_iam_policy_document" "tre_out_sns_kms_key" {
   dynamic "statement" {
     for_each = var.tre_out_subscribers
     content {
-      sid     = statement.value["sid"]
+      sid = statement.value["sid"]
       actions = [
         "kms:Decrypt",
         "kms:GenerateDataKey*"

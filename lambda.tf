@@ -67,4 +67,3 @@ resource "aws_lambda_function" "tre_success_handler" {
     "ApplicationType" = "Scala"
   }
 }
-
