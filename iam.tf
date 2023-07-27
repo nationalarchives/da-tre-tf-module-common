@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "tre_internal_topic_policy" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = concat(var.tre_internal_publishers, aws_iam_role.tre_success_handler_lambda.arn)
+      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.tre_success_handler_lambda.arn])
     }
     resources = [aws_sns_topic.tre_internal.arn]
   }
