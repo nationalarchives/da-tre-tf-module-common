@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "tre_internal_topic_policy" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = var.tre_internal_publishers
+      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.tre_success_handler_lambda.arn])
     }
     resources = [aws_sns_topic.tre_internal.arn]
   }
@@ -109,6 +109,18 @@ resource "aws_iam_role_policy_attachment" "tre_dlq_alerts_lambda" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
 }
 
+resource "aws_iam_role" "tre_success_handler_lambda" {
+  name                 = "${var.env}-${var.prefix}-success-handler-role"
+  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  permissions_boundary = var.tre_permission_boundary_arn
+}
+
+resource "aws_iam_role_policy_attachment" "tre_success_lambda_logs" {
+  role       = aws_iam_role.tre_success_handler_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
+}
+
+
 # S3 Policy
 
 data "aws_iam_policy_document" "common_tre_data_bucket" {
@@ -147,7 +159,7 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
   dynamic "statement" {
     for_each = var.tre_in_publishers
     content {
-      sid     = statement.value["sid"]
+      sid = statement.value["sid"]
       actions = [
         "kms:Decrypt",
         "kms:GenerateDataKey*"
@@ -160,7 +172,7 @@ data "aws_iam_policy_document" "tre_in_sns_kms_key" {
       resources = ["*"]
     }
   }
- }
+}
 
 data "aws_iam_policy_document" "tre_out_sns_kms_key" {
   statement {
@@ -179,7 +191,7 @@ data "aws_iam_policy_document" "tre_out_sns_kms_key" {
   dynamic "statement" {
     for_each = var.tre_out_subscribers
     content {
-      sid     = statement.value["sid"]
+      sid = statement.value["sid"]
       actions = [
         "kms:Decrypt",
         "kms:GenerateDataKey*"
