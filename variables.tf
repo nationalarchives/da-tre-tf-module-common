@@ -124,3 +124,8 @@ variable "ecr_uri_repo_prefix" {
   description = "The prefix for Docker image repository names to use; e.g. foo/ in ACCOUNT.dkr.ecr.REGION.amazonaws.com/foo/tre-bar"
   type        = string
 }
+
+variable "tre_court_document_pre_packer_lambda_arn" {
+  description = "The pre packer lambda arn"
+  type        = string
+}

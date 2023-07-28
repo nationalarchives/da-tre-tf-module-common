@@ -120,6 +120,23 @@ resource "aws_iam_role_policy_attachment" "tre_success_lambda_logs" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
+data "aws_iam_policy_document" "success_lambda_invoke_policy_data" {
+  statement {
+    sid     = "InvokeLambdaPolicy"
+    effect  = "Allow"
+    actions = ["lambda:InvokeFunction"]
+    resources = [
+      var.tre_court_document_pre_packer_lambda_arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "pre_packer_lambda_invoke_policy" {
+  name        = "${var.env}-${var.prefix}-success-lambda-invoke"
+  description = "The policy for pre packer lambda to invoke success lambda"
+  policy      = data.aws_iam_policy_document.success_lambda_invoke_policy_data.json
+}
+
 
 # S3 Policy
 
