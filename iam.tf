@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "failure_lambda_invoke_policy_data" {
   }
 }
 
-resource "aws_iam_policy" "pre_packer_lambda_invoke_policy" {
+resource "aws_iam_policy" "pre_packer_lambda_failure_invoke_policy" {
   name        = "${var.env}-${var.prefix}-failure-lambda-invoke"
   description = "The policy for pre packer lambda to invoke failure lambda"
   policy      = data.aws_iam_policy_document.failure_lambda_invoke_policy_data.json
