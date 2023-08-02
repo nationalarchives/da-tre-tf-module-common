@@ -48,7 +48,7 @@ resource "aws_lambda_function" "tre_dlq_slack_alerts" {
 }
 
 resource "aws_lambda_function" "tre_success_handler" {
-  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}mk-junk-example:1.0.14"
+  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}mk-junk-example:1.0.20"
   package_type  = "Image"
   function_name = "${var.env}-${var.prefix}-success-handler"
   role          = aws_iam_role.tre_success_handler_lambda.arn
