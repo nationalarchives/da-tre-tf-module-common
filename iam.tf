@@ -120,6 +120,7 @@ resource "aws_iam_role_policy_attachment" "tre_success_lambda_logs" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
+# these next two are not needed
 data "aws_iam_policy_document" "success_lambda_invoke_policy_data" {
   statement {
     sid     = "InvokeLambdaPolicy"
@@ -148,6 +149,7 @@ resource "aws_iam_role_policy_attachment" "tre_failure_lambda_logs" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
+# these next two are not needed
 data "aws_iam_policy_document" "failure_lambda_invoke_policy_data" {
   statement {
     sid     = "InvokeLambdaPolicy"
