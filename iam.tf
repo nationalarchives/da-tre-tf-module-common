@@ -137,6 +137,35 @@ resource "aws_iam_policy" "pre_packer_lambda_invoke_policy" {
   policy      = data.aws_iam_policy_document.success_lambda_invoke_policy_data.json
 }
 
+resource "aws_iam_role" "tre_failure_handler_lambda" {
+  name                 = "${var.env}-${var.prefix}-failure-handler-role"
+  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
+  permissions_boundary = var.tre_permission_boundary_arn
+}
+
+resource "aws_iam_role_policy_attachment" "tre_failure_lambda_logs" {
+  role       = aws_iam_role.tre_failure_handler_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
+}
+
+data "aws_iam_policy_document" "failure_lambda_invoke_policy_data" {
+  statement {
+    sid     = "InvokeLambdaPolicy"
+    effect  = "Allow"
+    actions = ["lambda:InvokeFunction"]
+    resources = [
+      var.tre_court_document_pre_packer_lambda_arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "pre_packer_lambda_invoke_policy" {
+  name        = "${var.env}-${var.prefix}-failure-lambda-invoke"
+  description = "The policy for pre packer lambda to invoke failure lambda"
+  policy      = data.aws_iam_policy_document.failure_lambda_invoke_policy_data.json
+}
+
+
 
 # S3 Policy
 

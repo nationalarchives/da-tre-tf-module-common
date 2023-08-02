@@ -48,10 +48,31 @@ resource "aws_lambda_function" "tre_dlq_slack_alerts" {
 }
 
 resource "aws_lambda_function" "tre_success_handler" {
-  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}mk-junk-example:1.0.30"
+  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}da-tre-fn-success-destination:${var.success_destination_image_versions.success_destination}"
   package_type  = "Image"
   function_name = "${var.env}-${var.prefix}-success-handler"
   role          = aws_iam_role.tre_success_handler_lambda.arn
+  memory_size   = 1024
+  timeout       = 30
+  environment {
+    variables = {
+      "TRE_INTERNAL_TOPIC_ARN" = aws_sns_topic.tre_internal.arn
+    }
+  }
+  tracing_config {
+    mode = "Active"
+  }
+
+  tags = {
+    "ApplicationType" = "Scala"
+  }
+}
+
+resource "aws_lambda_function" "tre_failure_handler" {
+  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}da-tre-fn-failure-destination:${var.failure_destination_image_versions.failure_destination}"
+  package_type  = "Image"
+  function_name = "${var.env}-${var.prefix}-failure-handler"
+  role          = aws_iam_role.tre_failure_handler_lambda.arn
   memory_size   = 1024
   timeout       = 30
   environment {

@@ -32,3 +32,8 @@ output "success_handler_lambda_arn" {
   value       = aws_lambda_function.tre_success_handler.arn
   description = "Success handler Lambda ARN"
 }
+
+output "failure_handler_lambda_arn" {
+  value       = aws_lambda_function.tre_failure_handler.arn
+  description = "Failure handler Lambda ARN"
+}
