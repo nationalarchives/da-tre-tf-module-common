@@ -28,7 +28,12 @@ output "tre_dlq_alerts_lambda_function_name" {
   description = "TRE DLQ Alerts Lambda Function Name"
 }
 
-output "success_handler_lambda_arn" {
-  value       = aws_lambda_function.tre_success_handler.arn
-  description = "Success handler Lambda ARN"
+output "success_destination_lambda_arn" {
+  value       = aws_lambda_function.success_destination.arn
+  description = "Success destination Lambda ARN"
+}
+
+output "failure_destination_lambda_arn" {
+  value       = aws_lambda_function.failure_destination.arn
+  description = "Failure destination Lambda ARN"
 }

@@ -24,6 +24,18 @@ variable "common_image_versions" {
     tre_dlq_slack_alerts = string
   })
 }
+variable "success_destination_image_versions" {
+  description = "Latest version of Images for the success destination Lambda Functions"
+  type = object({
+    success_destination = string
+  })
+}
+variable "failure_destination_image_versions" {
+  description = "Latest version of Images for the failure destination Lambda Functions"
+  type = object({
+    failure_destination = string
+  })
+}
 
 variable "tre_slack_alerts_publishers" {
   description = "Roles that have permission to publish messages to tre-slack-alerts topic"
