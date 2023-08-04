@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "tre_internal_topic_policy" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.tre_success_handler_lambda.arn, aws_iam_role.tre_failure_handler_lambda.arn])
+      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.success_destination_lambda.arn, aws_iam_role.failure_destination_lambda.arn])
     }
     resources = [aws_sns_topic.tre_internal.arn]
   }
@@ -109,25 +109,25 @@ resource "aws_iam_role_policy_attachment" "tre_dlq_alerts_lambda" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
 }
 
-resource "aws_iam_role" "tre_success_handler_lambda" {
-  name                 = "${var.env}-${var.prefix}-success-handler-role"
+resource "aws_iam_role" "success_destination_lambda" {
+  name                 = "${var.env}-${var.prefix}-success-destination-role"
   assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
-resource "aws_iam_role_policy_attachment" "tre_success_lambda_logs" {
-  role       = aws_iam_role.tre_success_handler_lambda.name
+resource "aws_iam_role_policy_attachment" "success_destination_lambda_logs" {
+  role       = aws_iam_role.success_destination_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
-resource "aws_iam_role" "tre_failure_handler_lambda" {
-  name                 = "${var.env}-${var.prefix}-failure-handler-role"
+resource "aws_iam_role" "failure_destination_lambda" {
+  name                 = "${var.env}-${var.prefix}-failure-destination-role"
   assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
-resource "aws_iam_role_policy_attachment" "tre_failure_lambda_logs" {
-  role       = aws_iam_role.tre_failure_handler_lambda.name
+resource "aws_iam_role_policy_attachment" "failure_destination_lambda_logs" {
+  role       = aws_iam_role.failure_destination_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 

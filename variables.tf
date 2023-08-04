@@ -25,13 +25,13 @@ variable "common_image_versions" {
   })
 }
 variable "success_destination_image_versions" {
-  description = "Latest version of Images for the court document success destination Lambda Functions"
+  description = "Latest version of Images for the success destination Lambda Functions"
   type = object({
     success_destination = string
   })
 }
 variable "failure_destination_image_versions" {
-  description = "Latest version of Images for the court document failure destination Lambda Functions"
+  description = "Latest version of Images for the failure destination Lambda Functions"
   type = object({
     failure_destination = string
   })
@@ -134,10 +134,5 @@ variable "ecr_uri_host" {
 
 variable "ecr_uri_repo_prefix" {
   description = "The prefix for Docker image repository names to use; e.g. foo/ in ACCOUNT.dkr.ecr.REGION.amazonaws.com/foo/tre-bar"
-  type        = string
-}
-
-variable "tre_court_document_pre_packer_lambda_arn" {
-  description = "The pre packer lambda arn"
   type        = string
 }
