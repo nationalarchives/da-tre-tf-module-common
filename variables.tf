@@ -47,6 +47,11 @@ variable "tre_data_bucket_write_access" {
   type        = list(string)
 }
 
+variable "dev_te_testdata_bucket_read_access" {
+  description = "Roles that have write access to tre-data-bucket"
+  type        = list(string)
+}
+
 variable "slack_webhook_url" {
   description = "Webhook URL for tre slack alerts"
   type        = string

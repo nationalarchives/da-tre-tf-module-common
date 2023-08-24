@@ -150,6 +150,22 @@ data "aws_iam_policy_document" "common_tre_data_bucket" {
   }
 }
 
+data "aws_iam_policy_document" "dev_te_testdata_bucket" {
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = var.dev_te_testdata_bucket_read_access
+    }
+
+    resources = ["arn:aws:s3:::dev_te-testdata/da-transform-sample-data/*", "arn:aws:s3:::dev_te-testdata/da-transform-sample-data"]
+  }
+}
+
 # KMS Key Policy
 
 data "aws_iam_policy_document" "tre_in_sns_kms_key" {
