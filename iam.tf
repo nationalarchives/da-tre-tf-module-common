@@ -162,7 +162,7 @@ data "aws_iam_policy_document" "dev_te_testdata_bucket" {
       identifiers = var.dev_te_testdata_bucket_read_access
     }
 
-    resources = ["arn:aws:s3:::dev-te-testdata/da-transform-sample-data/*", "arn:aws:s3:::dev-te-testdata/da-transform-sample-data"]
+    resources = ["arn:aws:s3:::da-tre-sample-data/*", "arn:aws:s3:::da-tre-sample-data"]
   }
 }
 
