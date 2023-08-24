@@ -48,7 +48,7 @@ variable "tre_data_bucket_write_access" {
 }
 
 variable "da_sample_data_bucket_read_access" {
-  description = "Roles that have write access to tre-data-bucket"
+  description = "Roles that have read access to da-sample-data"
   type        = list(string)
 }
 
