@@ -150,7 +150,7 @@ data "aws_iam_policy_document" "common_tre_data_bucket" {
   }
 }
 
-data "aws_iam_policy_document" "da_tre_sample_data_data_bucket" {
+data "aws_iam_policy_document" "da_sample_data_data_bucket" {
   statement {
     actions = [
       "s3:GetObject",
@@ -159,10 +159,10 @@ data "aws_iam_policy_document" "da_tre_sample_data_data_bucket" {
 
     principals {
       type        = "AWS"
-      identifiers = var.da_tre_sample_data_bucket_read_access
+      identifiers = var.da_sample_data_bucket_read_access
     }
 
-    resources = ["${aws_s3_bucket.da_tre_sample_data.arn}/*", aws_s3_bucket.da_tre_sample_data.arn]
+    resources = ["${aws_s3_bucket.da_sample_data.arn}/*", aws_s3_bucket.da_sample_data.arn]
   }
 }
 
