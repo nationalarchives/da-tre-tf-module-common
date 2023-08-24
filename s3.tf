@@ -34,7 +34,7 @@ resource "aws_s3_bucket_public_access_block" "common_tre_data" {
 
 # da-tre-sample-data bucket
 resource "aws_s3_bucket" "da_tre_sample_data" {
-  bucket = "da-tre-sample-data"
+  bucket = "da-sample-data"
 }
 
 resource "aws_s3_bucket_policy" "da_tre_sample_data" {
