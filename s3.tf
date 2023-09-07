@@ -32,7 +32,13 @@ resource "aws_s3_bucket_public_access_block" "common_tre_data" {
   restrict_public_buckets = true
 }
 
-# da-sample-data bucket
+# da-transform-sample-data bucket permissions
+resource "aws_s3_bucket_policy" "da_transform_sample_data" {
+  bucket = "da-transform-sample-data"
+  policy = data.aws_iam_policy_document.da_transform_sample_data_data_bucket.json
+}
+
+# da-sample-data bucket - to remove
 resource "aws_s3_bucket" "da_sample_data" {
   bucket = "mk-da-sample-data"
 }

@@ -150,6 +150,22 @@ data "aws_iam_policy_document" "common_tre_data_bucket" {
   }
 }
 
+data "aws_iam_policy_document" "da_transform_sample_data_data_bucket" {
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = var.da_sample_data_bucket_read_access
+    }
+
+    resources = ["arn:aws:s3:::da-transform-sample-data/*", "arn:aws:s3:::da-transform-sample-data"]
+  }
+}
+# sample data bucket policy - to remove
 data "aws_iam_policy_document" "da_sample_data_data_bucket" {
   statement {
     actions = [
