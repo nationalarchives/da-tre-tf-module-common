@@ -162,7 +162,7 @@ data "aws_iam_policy_document" "da_sample_data_data_bucket" {
       identifiers = var.da_sample_data_bucket_read_access
     }
 
-    resources = ["${aws_s3_bucket.da_sample_data.arn}/*", aws_s3_bucket.da_sample_data.arn]
+    resources = ["arn:aws:s3:::da-sample-data/*", "arn:aws:s3:::da-sample-data"]
   }
 }
 
