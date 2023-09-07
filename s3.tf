@@ -38,7 +38,7 @@ resource "aws_s3_bucket" "da_sample_data" {
 }
 
 resource "aws_s3_bucket_policy" "da_sample_data" {
-  bucket = aws_s3_bucket.da_sample_data.bucket
+  bucket = "mk-da-sample-data"
   policy = data.aws_iam_policy_document.da_sample_data_data_bucket.json
 }
 
