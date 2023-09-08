@@ -46,6 +46,42 @@ resource "aws_sns_topic_policy" "da_eventbus" {
   policy = data.aws_iam_policy_document.da_eventbus_topic_policy.json
 }
 
+locals {
+  blah = 22
+  tdr_user = var.env == 'intg' ? var.tdr_account_numbers.int :
+          (  var.env == 'prod' ? var.tdr_account_numbers.prd :
+            var.tdr_account_numbers.mgmt)
+}
+
+data "aws_iam_policy_document" "da_eventbus_topic_policy" {
+  statement {
+    sid     = "TRE-${var.env}-eventbus-users"
+    actions = [
+      "sns:Publish",
+      "sns:Subscribe"
+    ]
+    effect  = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = local.tdr_user
+    }
+    resources = [aws_sns_topic.da_eventbus.arn]
+  },
+  statement {
+    sid     = "DR2-${var.env}-eventbus-users"
+    actions = [
+      "sns:Publish",
+      "sns:Subscribe"
+    ]
+    effect  = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = "${var.dr2_account_numbers.${var.env}}"
+    }
+    resources = [aws_sns_topic.da_eventbus.arn]
+  }
+}
+
 # TRE Internal SNS Topic
 
 resource "aws_sns_topic" "tre_internal" {
@@ -79,21 +115,7 @@ resource "aws_sns_topic_policy" "tre_out" {
   policy = data.aws_iam_policy_document.tre_out_topic_policy.json
 }
 
-data "aws_iam_policy_document" "da_eventbus_topic_policy" {
-  statement {
-    sid     = "TRE-${var.env}-Eventbus-users"
-    actions = [
-             "sns:Publish",
-             "sns:Subscribe"
-             ]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = var.tdr_account_numbers
-    }
-    resources = [aws_sns_topic.tre_internal.arn]
-  }
-}
+
 
 resource "aws_sns_topic_subscription" "tre_out" {
   for_each              = { for sub in var.tre_out_subscriptions : sub.name => sub }
