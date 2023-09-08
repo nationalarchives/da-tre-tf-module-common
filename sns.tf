@@ -35,6 +35,17 @@ resource "aws_sns_topic_subscription" "tre_in" {
   filter_policy_scope = each.value.filter_policy_scope
 }
 
+
+resource "aws_sns_topic" "da_eventbus" {
+  name              = "${var.env}-da-eventbus"
+  kms_master_key_id = aws_kms_key.tre_in_sns.arn
+}
+
+resource "aws_sns_topic_policy" "da_eventbus" {
+  arn    = aws_sns_topic.da_eventbus.arn
+  policy = data.aws_iam_policy_document.da_eventbus_topic_policy.json
+}
+
 # TRE Internal SNS Topic
 
 resource "aws_sns_topic" "tre_internal" {
@@ -66,6 +77,22 @@ resource "aws_sns_topic" "tre_out" {
 resource "aws_sns_topic_policy" "tre_out" {
   arn    = aws_sns_topic.tre_out.arn
   policy = data.aws_iam_policy_document.tre_out_topic_policy.json
+}
+
+data "aws_iam_policy_document" "da_eventbus_topic_policy" {
+  statement {
+    sid     = "TRE-${var.env}-Eventbus-users"
+    actions = [
+             "sns:Publish",
+             "sns:Subscribe"
+             ]
+    effect  = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = var.tdr_account_numbers
+    }
+    resources = [aws_sns_topic.tre_internal.arn]
+  }
 }
 
 resource "aws_sns_topic_subscription" "tre_out" {

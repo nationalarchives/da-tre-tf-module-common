@@ -13,6 +13,17 @@ variable "account_id" {
   type        = string
 }
 
+variable "tdr_account_numbers" {
+  description = "tdr_account_numbers"
+  type = object({
+    intg    = string,
+    staging = string,
+    prod    = string,
+    mgmt    = string,
+    sbox    = string
+  })
+}
+
 variable "common_version" {
   description = "(Updates if Common TRE Lambda function versions change)"
   type        = string
