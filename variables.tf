@@ -13,17 +13,6 @@ variable "account_id" {
   type        = string
 }
 
-variable "tdr_account_numbers" {
-  description = "tdr_account_numbers"
-  type = object({
-    intg    = string,
-    staging = string,
-    prod    = string,
-    mgmt    = string,
-    sbox    = string
-  })
-}
-
 variable "common_version" {
   description = "(Updates if Common TRE Lambda function versions change)"
   type        = string
@@ -146,4 +135,26 @@ variable "ecr_uri_host" {
 variable "ecr_uri_repo_prefix" {
   description = "The prefix for Docker image repository names to use; e.g. foo/ in ACCOUNT.dkr.ecr.REGION.amazonaws.com/foo/tre-bar"
   type        = string
+}
+
+variable "dr2_account_numbers" {
+  description = "tdr_account_numbers"
+  type = object({
+    intg    = string,
+    staging = string,
+    prod    = string,
+    mgmt    = string,
+    sbox    = string
+  })
+}
+
+variable "tdr_account_numbers" {
+  description = "tdr_account_numbers"
+  type = object({
+    intg    = string,
+    staging = string,
+    prod    = string,
+    mgmt    = string,
+    sbox    = string
+  })
 }

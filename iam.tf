@@ -215,3 +215,42 @@ data "aws_iam_policy_document" "tre_out_sns_kms_key" {
     }
   }
 }
+
+
+resource "aws_sns_topic_policy" "da_eventbus" {
+  arn    = aws_sns_topic.da_eventbus.arn
+  policy = data.aws_iam_policy_document.da_eventbus_topic_policy.json
+}
+
+data "aws_iam_policy_document" "da_eventbus_topic_policy" {
+  statement {
+    sid     = "TRE-${var.env}-Eventbus-users"
+    actions = [
+      "sns:Publish",
+      "sns:Subscribe"
+    ]
+    effect  = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = local.da_eventbus_principals
+    }
+    resources = [aws_sns_topic.da_eventbus.arn]
+  }
+}
+
+
+
+data "aws_iam_policy_document" "da_eventbus_kms_key" {
+  statement {
+    sid     = "Allow access for Key Administrators"
+    actions = ["kms:*"]
+    effect  = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = local.da_eventbus_principals
+    }
+
+    resources = ["*"]
+  }
+}

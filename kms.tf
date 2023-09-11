@@ -29,7 +29,7 @@ resource "aws_kms_key" "da_eventbus" {
   enable_key_rotation     = true
   multi_region            = true
   deletion_window_in_days = 7
-  policy                  = data.aws_iam_policy_document.tre_in_sns_kms_key.json
+  policy                  = data.aws_iam_policy_document.da_eventbus_kms_key.json
 }
 
 resource "aws_kms_alias" "da_eventbus" {
