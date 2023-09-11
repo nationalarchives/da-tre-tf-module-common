@@ -1,5 +1,5 @@
 locals {
-  da_eventbus_principals : var.env == "prod" ?
+  da_eventbus_principals = var.env == "prod" ?
       [
         "arn:aws:iam::${var.account_id}:root",
         "arn:aws:iam::${var.tdr_account_numbers.prod}:root",
