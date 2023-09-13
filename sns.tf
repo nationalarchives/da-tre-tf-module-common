@@ -82,5 +82,5 @@ resource "aws_sns_topic_subscription" "tre_out" {
 
 resource "aws_sns_topic" "da_eventbus" {
   name              = "${var.env}-da-eventbus"
-  kms_master_key_id = aws_kms_key.tre_in_sns.arn
+  kms_master_key_id = aws_kms_key.da_eventbus.arn
 }
