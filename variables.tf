@@ -137,24 +137,9 @@ variable "ecr_uri_repo_prefix" {
   type        = string
 }
 
-variable "dr2_account_numbers" {
-  description = "tdr_account_numbers"
-  type = object({
-    intg    = string,
-    staging = string,
-    prod    = string,
-    mgmt    = string,
-    sbox    = string
-  })
+variable "da_eventbus_clients" {
+  description = "Accounts that can use the da event bus"
+  type = list(string)
 }
 
-variable "tdr_account_numbers" {
-  description = "tdr_account_numbers"
-  type = object({
-    intg    = string,
-    staging = string,
-    prod    = string,
-    mgmt    = string,
-    sbox    = string
-  })
-}
+

@@ -232,7 +232,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = local.da_eventbus_principals
+      identifiers = var.da_eventbus_clients
     }
     resources = [aws_sns_topic.da_eventbus.arn]
   }
@@ -241,6 +241,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
 
 
 data "aws_iam_policy_document" "da_eventbus_kms_key" {
+
   statement {
     sid     = "Allow access for Key Administrators"
     actions = ["kms:*"]
@@ -248,9 +249,9 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
 
     principals {
       type        = "AWS"
-      identifiers = local.da_eventbus_principals
+      identifiers = [for account_id in var.da_eventbus_clients : "arn:aws:iam::${account_id}:root"]
     }
-
     resources = ["*"]
   }
 }
+
