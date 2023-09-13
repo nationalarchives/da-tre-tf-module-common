@@ -254,7 +254,8 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
       identifiers = [for account_id in var.da_eventbus_clients : "arn:aws:iam::${account_id}:root"]
     }
     resources = ["*"]
-  },
+  }
+
   statement {
     sid     = "account_da_event_bus_key_policy"
     actions = ["kms:*"]
