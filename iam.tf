@@ -270,7 +270,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
       effect = "Allow"
       principals {
         type        = "AWS"
-        identifiers = "arn:aws:iam::${statement.value}:root"
+        identifiers = ["arn:aws:iam::${statement.value}:root"]
       }
       resources = ["*"]
     }
