@@ -223,6 +223,23 @@ resource "aws_sns_topic_policy" "da_eventbus" {
 }
 
 data "aws_iam_policy_document" "da_eventbus_topic_policy" {
+  dynamic "statement" {
+    for_each = var.da_eventbus_clients
+    content {
+      sid     = "da_event_bus_${var.da_eventbus_clients}"
+      actions = [
+        "sns:Publish",
+        "sns:Subscribe"
+      ]
+      effect  = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = var.da_eventbus_clients
+      }
+      resources = [aws_sns_topic.da_eventbus.arn]
+    }
+  }
+
   statement {
     sid     = "TRE-${var.env}-Eventbus-users"
     actions = [
@@ -232,7 +249,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = var.da_eventbus_clients
+      identifiers = var.account_id
     }
     resources = [aws_sns_topic.da_eventbus.arn]
   }
@@ -242,18 +259,21 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
 
 data "aws_iam_policy_document" "da_eventbus_kms_key" {
 
-  statement {
-    sid     = "da_event_bus_key_policy"
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey*"
-    ]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = [for account_id in var.da_eventbus_clients : "arn:aws:iam::${account_id}:root"]
+  dynamic "statement" {
+    for_each = var.da_eventbus_clients
+    content {
+      sid     = "da_event_bus_key_policy_${var.da_eventbus_clients}"
+      actions = [
+        "kms:Decrypt",
+        "kms:Encrypt"
+      ]
+      effect = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = "arn:aws:iam::${var.da_eventbus_clients}:root"
+      }
+      resources = ["*"]
     }
-    resources = ["*"]
   }
 
   statement {
