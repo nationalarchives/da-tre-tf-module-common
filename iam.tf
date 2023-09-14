@@ -224,9 +224,9 @@ resource "aws_sns_topic_policy" "da_eventbus" {
 
 data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
-    for_each = var.da_eventbus_clients
+    for_each = var.da_eventbus_client_account_ids
     content {
-      sid     = "da_event_bus_${var.da_eventbus_clients}"
+      sid     = "da_event_bus_${var.da_eventbus_client_account_ids}"
       actions = [
         "sns:Publish",
         "sns:Subscribe"
@@ -234,7 +234,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
       effect  = "Allow"
       principals {
         type        = "AWS"
-        identifiers = var.da_eventbus_clients
+        identifiers = var.da_eventbus_client_account_ids
       }
       resources = [aws_sns_topic.da_eventbus.arn]
     }
@@ -260,9 +260,9 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
 data "aws_iam_policy_document" "da_eventbus_kms_key" {
 
   dynamic "statement" {
-    for_each = var.da_eventbus_clients
+    for_each = var.da_eventbus_client_account_ids
     content {
-      sid     = "da_event_bus_key_policy_${var.da_eventbus_clients}"
+      sid     = "da_event_bus_key_policy_${var.da_eventbus_client_account_ids}"
       actions = [
         "kms:Decrypt",
         "kms:Encrypt"
@@ -270,7 +270,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
       effect = "Allow"
       principals {
         type        = "AWS"
-        identifiers = "arn:aws:iam::${var.da_eventbus_clients}:root"
+        identifiers = "arn:aws:iam::${var.da_eventbus_client_account_ids}:root"
       }
       resources = ["*"]
     }

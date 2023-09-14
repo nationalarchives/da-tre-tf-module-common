@@ -137,7 +137,7 @@ variable "ecr_uri_repo_prefix" {
   type        = string
 }
 
-variable "da_eventbus_clients" {
+variable "da_eventbus_client_account_ids" {
   description = "Accounts that can use the da event bus"
   type = list(string)
 }
