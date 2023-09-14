@@ -249,7 +249,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = var.account_id
+      identifiers = [var.account_id]
     }
     resources = [aws_sns_topic.da_eventbus.arn]
   }
