@@ -226,7 +226,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
     for_each = var.da_eventbus_client_account_ids
     content {
-      sid     = "da_event_bus_${statement.value}"
+      sid     = "da-event-bus-client-${statement.value}"
       actions = [
         "sns:Publish",
         "sns:Subscribe"
@@ -241,7 +241,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   }
 
   statement {
-    sid     = "TRE-${var.env}-Eventbus-users"
+    sid     = "account-${var.env}-eventbus-client"
     actions = [
       "sns:Publish",
       "sns:Subscribe"
@@ -262,7 +262,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
   dynamic "statement" {
     for_each = toset(var.da_eventbus_client_account_ids)
     content {
-      sid     = "da_event_bus_key_policy_${statement.value}"
+      sid     = "da-event-bus-key-policy-${statement.value}"
       actions = [
         "kms:Decrypt",
         "kms:Encrypt"
@@ -277,7 +277,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
   }
 
   statement {
-    sid     = "account_da_event_bus_key_policy"
+    sid     = "account-${var.env}-da-event-bus-key-policy"
     actions = ["kms:*"]
     effect  = "Allow"
     principals {
