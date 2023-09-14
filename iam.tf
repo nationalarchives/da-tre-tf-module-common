@@ -226,7 +226,7 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
     for_each = var.da_eventbus_client_account_ids
     content {
-      sid     = "da_event_bus_${var.da_eventbus_client_account_ids}"
+      sid     = "da_event_bus_clients}"
       actions = [
         "sns:Publish",
         "sns:Subscribe"
@@ -262,7 +262,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
   dynamic "statement" {
     for_each = var.da_eventbus_client_account_ids
     content {
-      sid     = "da_event_bus_key_policy_${var.da_eventbus_client_account_ids}"
+      sid     = "da_event_bus_key_policy_clients"
       actions = [
         "kms:Decrypt",
         "kms:Encrypt"
