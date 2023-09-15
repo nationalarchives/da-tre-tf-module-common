@@ -78,3 +78,9 @@ resource "aws_sns_topic_subscription" "tre_out" {
   raw_message_delivery  = each.value.raw_message_delivery
   subscription_role_arn = each.value.subscription_role_arn
 }
+
+
+resource "aws_sns_topic" "da_eventbus" {
+  name              = "${var.env}-da-eventbus"
+  kms_master_key_id = aws_kms_key.da_eventbus.arn
+}

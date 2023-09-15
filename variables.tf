@@ -136,3 +136,10 @@ variable "ecr_uri_repo_prefix" {
   description = "The prefix for Docker image repository names to use; e.g. foo/ in ACCOUNT.dkr.ecr.REGION.amazonaws.com/foo/tre-bar"
   type        = string
 }
+
+variable "da_eventbus_client_account_ids" {
+  description = "Accounts that can use the da event bus"
+  type = list(string)
+}
+
+
