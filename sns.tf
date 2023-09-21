@@ -98,6 +98,4 @@ resource "aws_sns_topic_subscription" "da_eventbus" {
   endpoint              = each.value.endpoint
   filter_policy         = each.value.filter_policy
   filter_policy_scope   = each.value.filter_policy_scope
-  raw_message_delivery  = each.value.raw_message_delivery
-  subscription_role_arn = each.value.subscription_role_arn
 }
