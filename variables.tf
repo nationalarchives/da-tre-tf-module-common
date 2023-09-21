@@ -155,6 +155,5 @@ variable "da_eventbus_subscriptions" {
     protocol              = string
     filter_policy         = any
     filter_policy_scope   = string
-    subscription_role_arn = string
   }))
 }
