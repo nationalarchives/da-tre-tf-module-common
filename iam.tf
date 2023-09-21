@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "tre_out_topic_policy" {
   }
 }
 
-data "aws_iam_policy_document" "tre_out_topic_policy" {
+data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   statement {
     sid     = "DA-EventbusPublishers"
     actions = ["sns:Publish"]
@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "tre_out_topic_policy" {
       type        = "AWS"
       identifiers = var.da_eventbus_publishers
     }
-    resources = [aws_sns_topic.tre_out.arn]
+    resources = [aws_sns_topic.da_eventbus.arn]
   }
 }
 

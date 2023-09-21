@@ -79,8 +79,14 @@ resource "aws_sns_topic_subscription" "tre_out" {
   subscription_role_arn = each.value.subscription_role_arn
 }
 
+# DA Eventbus SNS Topic
 
 resource "aws_sns_topic" "da_eventbus" {
   name              = "${var.env}-da-eventbus"
   kms_master_key_id = aws_kms_key.da_eventbus.arn
+}
+
+resource "aws_sns_topic_policy" "da_eventbus" {
+  arn    = aws_sns_topic.da_eventbus.arn
+  policy = data.aws_iam_policy_document.da_eventbus_topic_policy.json
 }
