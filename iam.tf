@@ -60,6 +60,19 @@ data "aws_iam_policy_document" "tre_out_topic_policy" {
   }
 }
 
+data "aws_iam_policy_document" "tre_out_topic_policy" {
+  statement {
+    sid     = "DA-EventbusPublishers"
+    actions = ["sns:Publish"]
+    effect  = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = var.da_eventbus_publishers
+    }
+    resources = [aws_sns_topic.tre_out.arn]
+  }
+}
+
 data "aws_iam_policy_document" "tre_internal_topic_policy" {
   statement {
     sid     = "TRE-InternalPublishers"
