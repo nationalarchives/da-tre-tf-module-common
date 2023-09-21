@@ -60,19 +60,6 @@ data "aws_iam_policy_document" "tre_out_topic_policy" {
   }
 }
 
-data "aws_iam_policy_document" "da_eventbus_topic_policy" {
-  statement {
-    sid     = "DA-EventbusPublishers"
-    actions = ["sns:Publish"]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = var.da_eventbus_publishers
-    }
-    resources = [aws_sns_topic.da_eventbus.arn]
-  }
-}
-
 data "aws_iam_policy_document" "tre_internal_topic_policy" {
   statement {
     sid     = "TRE-InternalPublishers"
@@ -231,7 +218,7 @@ data "aws_iam_policy_document" "tre_out_sns_kms_key" {
 
 data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
-    for_each = var.da_eventbus_client_account_ids
+    for_each = concat(var.da_eventbus_client_account_ids, var.da_eventbus_publishers)
     content {
       sid     = "da-event-bus-client-${statement.value}"
       actions = [
