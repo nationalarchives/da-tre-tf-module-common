@@ -229,12 +229,6 @@ data "aws_iam_policy_document" "tre_out_sns_kms_key" {
   }
 }
 
-
-resource "aws_sns_topic_policy" "da_eventbus" {
-  arn    = aws_sns_topic.da_eventbus.arn
-  policy = data.aws_iam_policy_document.da_eventbus_topic_policy.json
-}
-
 data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
     for_each = var.da_eventbus_client_account_ids
