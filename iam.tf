@@ -261,7 +261,6 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     for_each = toset(
       concat(
         var.da_eventbus_client_account_ids,
-        var.da_eventbus_publishers,
         [aws_iam_role.success_destination_lambda.arn]
       )
     )
