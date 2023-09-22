@@ -263,7 +263,8 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
       sid     = "da-event-bus-key-policy-${statement.value}"
       actions = [
         "kms:Decrypt",
-        "kms:Encrypt"
+        "kms:Encrypt",
+        "kms:GenerateDataKey*"
       ]
       effect = "Allow"
       principals {
