@@ -258,13 +258,12 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
 data "aws_iam_policy_document" "da_eventbus_kms_key" {
 
   dynamic "statement" {
-    for_each = toset(concat(var.da_eventbus_client_account_ids, [var.account_id]))
+    for_each = toset(var.da_eventbus_client_account_ids)
     content {
       sid     = "da-event-bus-key-policy-${statement.value}"
       actions = [
         "kms:Decrypt",
-        "kms:Encrypt",
-        "kms:GenerateDataKey*"
+        "kms:Encrypt"
       ]
       effect = "Allow"
       principals {
@@ -281,7 +280,10 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.account_id}:root"]
+      identifiers = [
+        "arn:aws:iam::${var.account_id}:root",
+        aws_iam_role.success_destination_lambda.arn
+      ]
     }
     resources = ["*"]
   }
