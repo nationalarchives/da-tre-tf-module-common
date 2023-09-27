@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "tre_internal_topic_policy" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.success_destination_lambda.arn, aws_iam_role.failure_destination_lambda.arn])
+      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.failure_destination_lambda.arn])
     }
     resources = [aws_sns_topic.tre_internal.arn]
   }
@@ -216,15 +216,13 @@ data "aws_iam_policy_document" "tre_out_sns_kms_key" {
   }
 }
 
-
-resource "aws_sns_topic_policy" "da_eventbus" {
-  arn    = aws_sns_topic.da_eventbus.arn
-  policy = data.aws_iam_policy_document.da_eventbus_topic_policy.json
-}
-
 data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
-    for_each = var.da_eventbus_client_account_ids
+    for_each = concat(
+      var.da_eventbus_client_account_ids, 
+      var.da_eventbus_publishers, 
+      [aws_iam_role.success_destination_lambda.arn]
+    )
     content {
       sid     = "da-event-bus-client-${statement.value}"
       actions = [
@@ -282,7 +280,10 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.account_id}:root"]
+      identifiers = [
+        "arn:aws:iam::${var.account_id}:root",
+        aws_iam_role.success_destination_lambda.arn
+      ]
     }
     resources = ["*"]
   }

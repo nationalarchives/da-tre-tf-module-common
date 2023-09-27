@@ -23,6 +23,16 @@ output "common_tre_out_topic_kms_arn" {
   description = "Common TRE out topic kms arn"
 }
 
+output "common_da_eventbus_topic_arn" {
+  value       = aws_sns_topic.da_eventbus.arn
+  description = "Common DA eventbus topic arn"
+}
+
+output "common_da_eventbus_topic_kms_arn" {
+  value       = aws_kms_key.da_eventbus.arn
+  description = "Common DA eventbus topic kms arn"
+}
+
 output "tre_dlq_alerts_lambda_function_name" {
   value       = aws_lambda_function.tre_dlq_slack_alerts.function_name
   description = "TRE DLQ Alerts Lambda Function Name"

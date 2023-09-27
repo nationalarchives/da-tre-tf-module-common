@@ -79,6 +79,11 @@ variable "tre_out_publishers" {
   type        = list(string)
 }
 
+variable "da_eventbus_publishers" {
+  description = "Roles that have permission to publish messages to da-eventbus topic"
+  type        = list(string)
+}
+
 variable "tre_in_subscriptions" {
   description = "List tre-in topic subscriptions"
   type = list(object({
@@ -142,4 +147,13 @@ variable "da_eventbus_client_account_ids" {
   type = list(string)
 }
 
-
+variable "da_eventbus_subscriptions" {
+  description = "List tre-da-eventbus topic subscriptions"
+  type = list(object({
+    name                  = string
+    endpoint              = string
+    protocol              = string
+    filter_policy         = any
+    filter_policy_scope   = string
+  }))
+}
