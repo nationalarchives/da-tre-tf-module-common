@@ -62,13 +62,6 @@ variable "slack_username" {
   type        = string
 }
 
-variable "tre_in_publishers" {
-  type = list(object({
-    sid                  = string
-    principal_identifier = list(string)
-  }))
-}
-
 variable "tre_internal_publishers" {
   description = "Roles that have permission to publish messages to tre-internal topic"
   type        = list(string)
@@ -84,17 +77,6 @@ variable "da_eventbus_publishers" {
   type        = list(string)
 }
 
-variable "tre_in_subscriptions" {
-  description = "List tre-in topic subscriptions"
-  type = list(object({
-    name                = string
-    endpoint            = string
-    filter_policy       = any
-    filter_policy_scope = string
-    protocol            = string
-  }))
-}
-
 variable "tre_internal_subscriptions" {
   description = "List tre-internal topic subscriptions"
   type = list(object({
@@ -103,27 +85,6 @@ variable "tre_internal_subscriptions" {
     filter_policy       = any
     filter_policy_scope = string
     protocol            = string
-  }))
-}
-
-variable "tre_out_subscriptions" {
-  description = "List tre-out topic subscriptions"
-  type = list(object({
-    name                  = string
-    endpoint              = string
-    protocol              = string
-    filter_policy         = any
-    filter_policy_scope   = string
-    raw_message_delivery  = bool
-    subscription_role_arn = string
-  }))
-}
-
-variable "tre_out_subscribers" {
-  type = list(object({
-    sid          = string
-    subscriber   = list(string)
-    endpoint_arn = list(string)
   }))
 }
 

@@ -14,27 +14,6 @@ resource "aws_sns_topic_subscription" "common_tre_slack_alerts" {
   endpoint  = aws_lambda_function.common_tre_slack_alerts.arn
 }
 
-# TRE In SNS Topic
-
-resource "aws_sns_topic" "tre_in" {
-  name              = "${var.env}-${var.prefix}-in"
-  kms_master_key_id = aws_kms_key.tre_in_sns.arn
-}
-
-resource "aws_sns_topic_policy" "tre_in" {
-  arn    = aws_sns_topic.tre_in.arn
-  policy = data.aws_iam_policy_document.tre_in_topic_policy.json
-}
-
-resource "aws_sns_topic_subscription" "tre_in" {
-  for_each            = { for sub in var.tre_in_subscriptions : sub.name => sub }
-  topic_arn           = aws_sns_topic.tre_in.arn
-  protocol            = each.value.protocol
-  endpoint            = each.value.endpoint
-  filter_policy       = each.value.filter_policy
-  filter_policy_scope = each.value.filter_policy_scope
-}
-
 # TRE Internal SNS Topic
 
 resource "aws_sns_topic" "tre_internal" {
@@ -54,29 +33,6 @@ resource "aws_sns_topic_subscription" "tre_internal" {
   endpoint            = each.value.endpoint
   filter_policy       = each.value.filter_policy
   filter_policy_scope = each.value.filter_policy_scope
-}
-
-# TRE Out SNS Topic
-
-resource "aws_sns_topic" "tre_out" {
-  name              = "${var.env}-${var.prefix}-out"
-  kms_master_key_id = aws_kms_key.tre_out_sns.arn
-}
-
-resource "aws_sns_topic_policy" "tre_out" {
-  arn    = aws_sns_topic.tre_out.arn
-  policy = data.aws_iam_policy_document.tre_out_topic_policy.json
-}
-
-resource "aws_sns_topic_subscription" "tre_out" {
-  for_each              = { for sub in var.tre_out_subscriptions : sub.name => sub }
-  topic_arn             = aws_sns_topic.tre_out.arn
-  protocol              = each.value.protocol
-  endpoint              = each.value.endpoint
-  filter_policy         = each.value.filter_policy
-  filter_policy_scope   = each.value.filter_policy_scope
-  raw_message_delivery  = each.value.raw_message_delivery
-  subscription_role_arn = each.value.subscription_role_arn
 }
 
 # DA Eventbus SNS Topic
