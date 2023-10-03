@@ -114,7 +114,9 @@ variable "da_eventbus_subscriptions" {
     name                  = string
     endpoint              = string
     protocol              = string
+    raw_message_delivery  = bool
     filter_policy         = any
     filter_policy_scope   = string
+    subscription_role_arn = string
   }))
 }

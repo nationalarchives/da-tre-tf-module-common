@@ -52,6 +52,8 @@ resource "aws_sns_topic_subscription" "da_eventbus" {
   topic_arn             = aws_sns_topic.da_eventbus.arn
   protocol              = each.value.protocol
   endpoint              = each.value.endpoint
+  raw_message_delivery  = each.value.raw_message_delivery 
   filter_policy         = each.value.filter_policy
   filter_policy_scope   = each.value.filter_policy_scope
+  subscription_role_arn = each.value.subscription_role_arn
 }
