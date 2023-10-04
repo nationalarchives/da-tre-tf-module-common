@@ -160,10 +160,11 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
       type        = "AWS"
       identifiers = concat(
         [
-          "arn:aws:iam::${var.account_id}:root",
+          var.account_id,
           aws_iam_role.success_destination_lambda.arn,
-          aws_iam_role.failure_destination_lambda.arn
-        ])
+          aws_iam_role.failure_destination_lambda.arn,
+        ]
+      )
     }
     resources = ["*"]
   }
