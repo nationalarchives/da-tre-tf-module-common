@@ -14,27 +14,6 @@ resource "aws_sns_topic_subscription" "common_tre_slack_alerts" {
   endpoint  = aws_lambda_function.common_tre_slack_alerts.arn
 }
 
-# TRE Internal SNS Topic
-
-resource "aws_sns_topic" "tre_internal" {
-  name              = "${var.env}-${var.prefix}-internal"
-  kms_master_key_id = "alias/aws/sns"
-}
-
-resource "aws_sns_topic_policy" "tre_internal" {
-  arn    = aws_sns_topic.tre_internal.arn
-  policy = data.aws_iam_policy_document.tre_internal_topic_policy.json
-}
-
-resource "aws_sns_topic_subscription" "tre_internal" {
-  for_each            = { for sub in var.tre_internal_subscriptions : sub.name => sub }
-  topic_arn           = aws_sns_topic.tre_internal.arn
-  protocol            = each.value.protocol
-  endpoint            = each.value.endpoint
-  filter_policy       = each.value.filter_policy
-  filter_policy_scope = each.value.filter_policy_scope
-}
-
 # DA Eventbus SNS Topic
 
 resource "aws_sns_topic" "da_eventbus" {
