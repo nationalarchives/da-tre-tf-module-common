@@ -12,20 +12,6 @@ data "aws_iam_policy_document" "common_tre_slack_alerts_sns_topic_policy" {
   }
 }
 
-data "aws_iam_policy_document" "tre_internal_topic_policy" {
-  statement {
-    sid     = "TRE-InternalPublishers"
-    actions = ["sns:Publish"]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.failure_destination_lambda.arn])
-    }
-    resources = [aws_sns_topic.tre_internal.arn]
-  }
-}
-
-
 # Lambda Policies
 
 resource "aws_iam_role" "common_tre_slack_alerts_lambda_role" {
@@ -108,7 +94,6 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
     for_each = concat(
       var.da_eventbus_client_account_ids, 
-      var.da_eventbus_publishers, 
       [aws_iam_role.success_destination_lambda.arn]
     )
     content {
