@@ -163,7 +163,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
           "arn:aws:iam::${var.account_id}:root",
           aws_iam_role.success_destination_lambda.arn,
           aws_iam_role.failure_destination_lambda.arn
-        ], var.da_eventbus_publishers)
+        ])
     }
     resources = ["*"]
   }
