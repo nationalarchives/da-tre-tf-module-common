@@ -62,6 +62,11 @@ variable "slack_username" {
   type        = string
 }
 
+variable "da_eventbus_publishers" {
+  description = "Roles that have permission to publish messages to da-eventbus topic"
+  type        = list(string)
+}
+
 variable "tre_permission_boundary_arn" {
   description = "ARN of the TRE permission boundary policy"
   type        = string
