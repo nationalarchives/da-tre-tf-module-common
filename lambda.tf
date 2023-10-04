@@ -77,7 +77,7 @@ resource "aws_lambda_function" "failure_destination" {
   timeout       = 30
   environment {
     variables = {
-      "TRE_INTERNAL_TOPIC_ARN" = aws_sns_topic.tre_internal.arn
+      "DA_EVENTBUS_TOPIC_ARN" = aws_sns_topic.da_eventbus.arn
     }
   }
   tracing_config {
