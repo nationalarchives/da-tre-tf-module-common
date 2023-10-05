@@ -150,26 +150,18 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     }
   }
 
-  dynamic statement {
-    for_each = toset(
-      concat(
-        [
-          aws_iam_role.success_destination_lambda.arn,
-          aws_iam_role.failure_destination_lambda.arn,
-        ],
-        var.da_eventbus_publishers
-      )
-    )
-    content {
-      sid     = "account-${var.env}-da-event-bus-key-policy-${statement.value}"
-      actions = ["kms:*"]
-      effect  = "Allow"
-      principals {
-        type        = "AWS"
-        identifiers = [statement.value]
-      }
-      resources = ["*"]
+  statement {
+    sid     = "account-${var.env}-da-event-bus-key-policy"
+    actions = ["kms:*"]
+    effect  = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = concat([
+        "arn:aws:iam::${var.account_id}:root",
+        aws_iam_role.success_destination_lambda.arn
+      ], var.da_eventbus_publishers)
     }
+    resources = ["*"]
   }
 }
 
