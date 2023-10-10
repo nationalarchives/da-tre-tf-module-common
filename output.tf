@@ -8,21 +8,6 @@ output "common_tre_data_bucket" {
   description = "Common TRE Data Bucket"
 }
 
-output "common_tre_internal_topic_arn" {
-  value       = aws_sns_topic.tre_internal.arn
-  description = "Common TRE internal topic arn"
-}
-
-output "common_tre_out_topic_arn" {
-  value       = aws_sns_topic.tre_out.arn
-  description = "Common TRE out topic arn"
-}
-
-output "common_tre_out_topic_kms_arn" {
-  value       = aws_kms_key.tre_out_sns.arn
-  description = "Common TRE out topic kms arn"
-}
-
 output "common_da_eventbus_topic_arn" {
   value       = aws_sns_topic.da_eventbus.arn
   description = "Common DA eventbus topic arn"

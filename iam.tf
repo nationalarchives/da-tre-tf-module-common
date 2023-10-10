@@ -12,68 +12,6 @@ data "aws_iam_policy_document" "common_tre_slack_alerts_sns_topic_policy" {
   }
 }
 
-data "aws_iam_policy_document" "tre_in_topic_policy" {
-  dynamic "statement" {
-    for_each = var.tre_in_publishers
-    content {
-      sid     = statement.value["sid"]
-      actions = ["sns:Publish"]
-      effect  = "Allow"
-      principals {
-        type        = "AWS"
-        identifiers = statement.value["principal_identifier"]
-      }
-      resources = [aws_sns_topic.tre_in.arn]
-    }
-  }
-}
-
-data "aws_iam_policy_document" "tre_out_topic_policy" {
-  statement {
-    sid     = "TRE-OutPublishers"
-    actions = ["sns:Publish"]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = var.tre_out_publishers
-    }
-    resources = [aws_sns_topic.tre_out.arn]
-  }
-
-  dynamic "statement" {
-    for_each = var.tre_out_subscribers
-    content {
-      sid     = statement.value["sid"]
-      actions = ["sns:Subscribe"]
-      effect  = "Allow"
-      principals {
-        type        = "AWS"
-        identifiers = statement.value["subscriber"]
-      }
-      condition {
-        test     = "StringEquals"
-        variable = "sns:Endpoint"
-        values   = statement.value["endpoint_arn"]
-      }
-      resources = [aws_sns_topic.tre_out.arn]
-    }
-  }
-}
-
-data "aws_iam_policy_document" "tre_internal_topic_policy" {
-  statement {
-    sid     = "TRE-InternalPublishers"
-    actions = ["sns:Publish"]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = concat(var.tre_internal_publishers, [aws_iam_role.failure_destination_lambda.arn])
-    }
-    resources = [aws_sns_topic.tre_internal.arn]
-  }
-}
-
-
 # Lambda Policies
 
 resource "aws_iam_role" "common_tre_slack_alerts_lambda_role" {
@@ -152,76 +90,15 @@ data "aws_iam_policy_document" "common_tre_data_bucket" {
 
 # KMS Key Policy
 
-data "aws_iam_policy_document" "tre_in_sns_kms_key" {
-  statement {
-    sid     = "Allow access for Key Administrators"
-    actions = ["kms:*"]
-    effect  = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.account_id}:root"]
-    }
-
-    resources = ["*"]
-  }
-
-  dynamic "statement" {
-    for_each = var.tre_in_publishers
-    content {
-      sid = statement.value["sid"]
-      actions = [
-        "kms:Decrypt",
-        "kms:GenerateDataKey*"
-      ]
-      effect = "Allow"
-      principals {
-        type        = "AWS"
-        identifiers = statement.value["principal_identifier"]
-      }
-      resources = ["*"]
-    }
-  }
-}
-
-data "aws_iam_policy_document" "tre_out_sns_kms_key" {
-  statement {
-    sid     = "Allow access for Key Administrators"
-    actions = ["kms:*"]
-    effect  = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.account_id}:root"]
-    }
-
-    resources = ["*"]
-  }
-
-  dynamic "statement" {
-    for_each = var.tre_out_subscribers
-    content {
-      sid = statement.value["sid"]
-      actions = [
-        "kms:Decrypt",
-        "kms:GenerateDataKey*"
-      ]
-      effect = "Allow"
-      principals {
-        type        = "AWS"
-        identifiers = statement.value["subscriber"]
-      }
-      resources = ["*"]
-    }
-  }
-}
-
 data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   dynamic "statement" {
     for_each = concat(
-      var.da_eventbus_client_account_ids, 
-      var.da_eventbus_publishers, 
-      [aws_iam_role.success_destination_lambda.arn]
+      var.da_eventbus_client_account_ids,
+      var.da_eventbus_publishers,
+      [
+        aws_iam_role.success_destination_lambda.arn,
+        aws_iam_role.failure_destination_lambda.arn
+      ]
     )
     content {
       sid     = "da-event-bus-client-${statement.value}"
@@ -253,8 +130,6 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   }
 }
 
-
-
 data "aws_iam_policy_document" "da_eventbus_kms_key" {
 
   dynamic "statement" {
@@ -281,13 +156,12 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     effect  = "Allow"
     principals {
       type        = "AWS"
-      identifiers = [
+      identifiers = concat([
         "arn:aws:iam::${var.account_id}:root",
         aws_iam_role.success_destination_lambda.arn
-      ]
+      ], var.da_eventbus_publishers)
     }
     resources = ["*"]
   }
-
 }
 
