@@ -23,7 +23,7 @@ resource "aws_lambda_permission" "common_tre_slack_alerts_sns_trigger_permission
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.common_tre_slack_alerts.function_name
   principal     = "sns.amazonaws.com"
-  source_arn    = aws_sns_topic.common_tre_slack_alerts.arn
+  source_arn    = aws_sns_topic.da_eventbus.arn
 }
 
 # TRE dlq alerts
