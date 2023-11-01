@@ -4,6 +4,7 @@ resource "aws_lambda_function" "common_tre_slack_alerts" {
   function_name = "${var.env}-${var.prefix}-common-slack-alerts"
   role          = aws_iam_role.common_tre_slack_alerts_lambda_role.arn
   timeout       = 30
+  memory_size   = 1024
   environment {
     variables = {
       "SLACK_WEBHOOK_URL" = var.slack_webhook_url
