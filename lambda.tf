@@ -11,11 +11,12 @@ resource "aws_lambda_function" "common_tre_slack_alerts" {
       "ENV"               = var.env
       "SLACK_CHANNEL"     = var.slack_channel
       "SLACK_USERNAME"    = var.slack_username
+      "NOTIFIABLE_SLACK_ENDPOINTS_ON_ERROR" = var.notifiable_slack_endpoints_on_error
     }
   }
 
   tags = {
-    "ApplicationType" = "Python"
+    "ApplicationType" = "Scala"
   }
 }
 
