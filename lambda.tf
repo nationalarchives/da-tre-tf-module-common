@@ -1,20 +1,22 @@
 resource "aws_lambda_function" "common_tre_slack_alerts" {
-  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}${var.prefix}-slack-alerts:${var.common_image_versions.tre_slack_alerts}"
+  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}${var.prefix}-fn-slack-notifications:${var.common_image_versions.tre_slack_alerts}"
   package_type  = "Image"
   function_name = "${var.env}-${var.prefix}-common-slack-alerts"
   role          = aws_iam_role.common_tre_slack_alerts_lambda_role.arn
   timeout       = 30
+  memory_size   = 1024
   environment {
     variables = {
       "SLACK_WEBHOOK_URL" = var.slack_webhook_url
       "ENV"               = var.env
       "SLACK_CHANNEL"     = var.slack_channel
       "SLACK_USERNAME"    = var.slack_username
+      "NOTIFIABLE_SLACK_ENDPOINTS_ON_ERROR" = jsonencode(var.notifiable_slack_endpoints_on_error)
     }
   }
 
   tags = {
-    "ApplicationType" = "Python"
+    "ApplicationType" = "Scala"
   }
 }
 
@@ -23,7 +25,7 @@ resource "aws_lambda_permission" "common_tre_slack_alerts_sns_trigger_permission
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.common_tre_slack_alerts.function_name
   principal     = "sns.amazonaws.com"
-  source_arn    = aws_sns_topic.common_tre_slack_alerts.arn
+  source_arn    = aws_sns_topic.da_eventbus.arn
 }
 
 # TRE dlq alerts
