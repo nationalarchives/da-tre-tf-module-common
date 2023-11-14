@@ -104,3 +104,8 @@ variable "notifiable_slack_endpoints_on_error" {
   description = "Channel - webhook url key value pairs to post to in case of TRE errors"
   type        = map(string)
 }
+
+variable "kms_key_administration_role" {
+  description = "Role to administer kms keys"
+  type = string
+}
