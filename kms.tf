@@ -21,7 +21,7 @@ module "common_data_bucket_kms_key" {
   tags = {}
   default_policy_variables = {
     user_roles = var.tre_data_bucket_write_access
+    ci_roles = [var.kms_key_administration_role]
+    service_names = ["cloudwatch"]
   }
-  ci_roles = [var.kms_key_administration_role]
-  service_names = ["cloudwatch"]
 }
