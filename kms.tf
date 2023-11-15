@@ -18,32 +18,7 @@ resource "aws_kms_key_policy" "da_eventbus_policy" {
 module "common_data_bucket_kms_key" {
   source = "github.com/nationalarchives/da-terraform-modules//kms?ref=main"
   key_name = "${var.env}-${var.prefix}-common-data-kms"
-  tags = [
-    {
-      "key": "Environment",
-      "value": "pte-ah"
-    },
-    {
-      "key": "Owner",
-      "value": "digital-archiving"
-    },
-    {
-      "key": "Role",
-      "value": "prvt"
-    },
-    {
-      "key": "TerraformSource",
-      "value": "https://github.com/nationalarchives/tre-terraform-environments"
-    },
-    {
-      "key": "Terraform",
-      "value": "true"
-    },
-    {
-      "key": "CostCentre",
-      "value": "56"
-    }
-  ]
+  tags = {}
   default_policy_variables = {
     user_roles = var.tre_data_bucket_write_access
     ci_roles = [var.kms_key_administration_role]
