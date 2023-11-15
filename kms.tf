@@ -15,7 +15,6 @@ resource "aws_kms_key_policy" "da_eventbus_policy" {
   policy = data.aws_iam_policy_document.da_eventbus_kms_key.json
 }
 
-/*
 module "common_data_bucket_kms_key" {
   source = "github.com/nationalarchives/da-terraform-modules//kms?ref=main"
   key_name = "${var.env}-${var.prefix}-common-data-kms"
@@ -26,4 +25,3 @@ module "common_data_bucket_kms_key" {
     service_names = ["cloudwatch"]
   }
 }
-*/

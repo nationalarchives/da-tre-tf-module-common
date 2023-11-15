@@ -69,12 +69,6 @@ resource "aws_iam_role_policy_attachment" "failure_destination_lambda_logs" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
-resource "aws_iam_role" "test-permissions-role" {
-  name                 = "${var.env}-${var.prefix}-test-permissions-role"
-  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
-  permissions_boundary = var.tre_permission_boundary_arn
-}
-
 # S3 Policy
 
 data "aws_iam_policy_document" "common_tre_data_bucket" {
