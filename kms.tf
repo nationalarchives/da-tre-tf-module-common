@@ -16,7 +16,7 @@ resource "aws_kms_key_policy" "da_eventbus_policy" {
 }
 
 module "common_data_bucket_kms_key" {
-  source = "github.com/nationalarchives/da-terraform-modules//kms?ref=main"
+  source = "github.com/nationalarchives/da-terraform-modules//kms?ref=feature-DTE-915-add-permissions-boundary-argument"
   key_name = "${var.env}-${var.prefix}-common-data-kms"
   tags = {}
   default_policy_variables = {
@@ -24,4 +24,5 @@ module "common_data_bucket_kms_key" {
     ci_roles = [var.kms_key_administration_role]
     service_names = ["cloudwatch"]
   }
+  permissions_boundary = var.tre_permission_boundary_arn
 }
