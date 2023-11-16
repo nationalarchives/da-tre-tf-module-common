@@ -72,6 +72,7 @@ resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
 }
 
 data "aws_iam_policy_document" "editorial_judgment_out_copier_assume_role_policy" {
+  count   = var.env == "pte-ih" ? 1 : 0
   statement {
     effect = "Allow"
     actions = [
@@ -101,6 +102,7 @@ resource "aws_iam_policy" "editorial_judgment_out_copier_buckets_access_policy" 
 }
 
 data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
+  count      = var.env == "pte-ih" ? 1 : 0
   statement {
     actions = [
       "s3:GetObject",
