@@ -70,11 +70,11 @@ resource "aws_iam_role" "failure_destination_lambda" {
 #  permissions_boundary = var.tre_permission_boundary_arn
 #}
 
-resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
+resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copiers" {
   count              = var.env == "pte-ih" ? 1 : 0
-  name               = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
+  name               = "${var.env}-${var.prefix}-editorial-judgment-out-copiers"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-  permissions_boundary = var.tre_permission_boundary_arn
+  
 }
 
 #resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
