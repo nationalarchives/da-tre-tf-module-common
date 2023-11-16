@@ -121,12 +121,13 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     ]
   }
   statement {
-    Effect = "Allow"
-    Action = "sts:AssumeRole"
-    Principal = {
-      "AWS" : [
+    effect  = "Allow"
+    actions = "sts:AssumeRole"
+    principals {
+      type = "AWS"
+      identifiers = [
         "arn:aws:iam::059334750967:role/intg-copy-from-tre-bucket-role",
-        "arn:aws:iam::897688892737:role/staging-copy-from-tre-bucket-role",
+        "arn:aws:iam::897688892737:role/staging-copy-from-tre-bucket-role"
       ]
     }
   }
