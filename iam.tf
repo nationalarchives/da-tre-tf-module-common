@@ -64,12 +64,6 @@ resource "aws_iam_role" "failure_destination_lambda" {
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
-#resource "aws_iam_role" "no_hope_lambda" {
-#  name                 = "${var.env}-${var.prefix}-no-hope-role"
-#  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
-#  permissions_boundary = var.tre_permission_boundary_arn
-#}
-
 resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
   count              = var.env == "pte-ih" ? 1 : 0
   name               = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
@@ -98,7 +92,7 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::prod-tre-editorial-judgment-out"
+      "arn:aws:s3:::da-transform-sample-data"
     ]
   }
   statement {
@@ -108,7 +102,7 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::prod-tre-editorial-judgment-out/*"
+      "arn:aws:s3:::da-transform-sample-data/*"
 
     ]
   }
