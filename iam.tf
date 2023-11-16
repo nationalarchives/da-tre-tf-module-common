@@ -64,6 +64,74 @@ resource "aws_iam_role" "failure_destination_lambda" {
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
+resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
+  count = var.env == "pte-ih" ? 1 : 0
+  name  = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
+}
+
+resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
+  count      = var.env == "pte-ih" ? 1 : 0
+  role       = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier.name
+  policy_arn = aws_iam_policy.editorial_judgment_out_copier_buckets_access_policy.arn
+}
+
+resource "aws_iam_policy" "editorial_judgment_out_copier_buckets_access_policy" {
+  count       = var.env == "pte-ih" ? 1 : 0
+  name        = "${var.env}-${var.prefix}-editorial_judgment_out"
+  description = "The s3 policy to allow lambda to read from the tdr transfer bucket"
+  policy      = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
+}
+
+data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
+    effect = "Allow"
+    resources = [
+      "arn:aws:s3:::prod-tre-editorial-judgment-out/*",
+      "arn:aws:s3:::prod-tre-editorial-judgment-out"
+    ]
+  }
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:ListBucket",
+    ]
+    effect = "Allow"
+    resources = [
+      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input/*",
+      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input",
+      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input/*",
+      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input",
+      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input/*",
+      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input"
+    ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt"
+    ]
+    resources = [
+      "arn:aws:kms:eu-west-2:059334750967:key/37b61f81-99ad-43f0-b00b-b9bbb000cdaf",
+      "arn:aws:kms:eu-west-2:897688892737:key/9b0dd233-c792-4ba6-b260-844d73c9f65c"
+    ]
+  }
+  statement {
+    Effect = "Allow"
+    Action = "sts:AssumeRole"
+    Principal = {
+      "AWS" : [
+        "arn:aws:iam::059334750967:role/intg-copy-from-tre-bucket-role",
+        "arn:aws:iam::897688892737:role/staging-copy-from-tre-bucket-role",
+      ]
+    }
+  }
+}
+
 resource "aws_iam_role_policy_attachment" "failure_destination_lambda_logs" {
   role       = aws_iam_role.failure_destination_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
@@ -101,12 +169,12 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
       ]
     )
     content {
-      sid     = "da-event-bus-client-${statement.value}"
+      sid = "da-event-bus-client-${statement.value}"
       actions = [
         "sns:Publish",
         "sns:Subscribe"
       ]
-      effect  = "Allow"
+      effect = "Allow"
       principals {
         type        = "AWS"
         identifiers = [statement.value]
@@ -116,12 +184,12 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   }
 
   statement {
-    sid     = "account-${var.env}-eventbus-client"
+    sid = "account-${var.env}-eventbus-client"
     actions = [
       "sns:Publish",
       "sns:Subscribe"
     ]
-    effect  = "Allow"
+    effect = "Allow"
     principals {
       type        = "AWS"
       identifiers = [var.account_id]
@@ -135,7 +203,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
   dynamic "statement" {
     for_each = toset(var.da_eventbus_client_account_ids)
     content {
-      sid     = "da-event-bus-key-policy-${statement.value}"
+      sid = "da-event-bus-key-policy-${statement.value}"
       actions = [
         "kms:Decrypt",
         "kms:Encrypt",
@@ -155,7 +223,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     actions = ["kms:*"]
     effect  = "Allow"
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = concat([
         "arn:aws:iam::${var.account_id}:root",
         aws_iam_role.success_destination_lambda.arn,
