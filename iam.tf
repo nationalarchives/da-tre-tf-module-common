@@ -58,17 +58,17 @@ resource "aws_iam_role_policy_attachment" "success_destination_lambda_logs" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
-resource "aws_iam_role" "failure_destination_lambda" {
-  name                 = "${var.env}-${var.prefix}-failure-destination-role"
-  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
-  permissions_boundary = var.tre_permission_boundary_arn
-}
+#resource "aws_iam_role" "failure_destination_lambda" {
+#  name                 = "${var.env}-${var.prefix}-failure-destination-role"
+#  assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
+#  permissions_boundary = var.tre_permission_boundary_arn
+#}
 
-resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
-  count              = var.env == "pte-ih" ? 1 : 0
-  name               = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
-  assume_role_policy = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
-}
+#resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
+#  count              = var.env == "pte-ih" ? 1 : 0
+#  name               = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
+#  assume_role_policy = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
+#}
 
 #resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
 #  count      = var.env == "pte-ih" ? 1 : 0
