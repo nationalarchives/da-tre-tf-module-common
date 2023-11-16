@@ -67,20 +67,21 @@ resource "aws_iam_role" "failure_destination_lambda" {
 resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
   count = var.env == "pte-ih" ? 1 : 0
   name  = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
+  assume_role_policy   = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
 }
 
-resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
-  count      = var.env == "pte-ih" ? 1 : 0
-  role       = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier.name
-  policy_arn = aws_iam_policy.editorial_judgment_out_copier_buckets_access_policy.arn
-}
-
-resource "aws_iam_policy" "editorial_judgment_out_copier_buckets_access_policy" {
-  count       = var.env == "pte-ih" ? 1 : 0
-  name        = "${var.env}-${var.prefix}-editorial_judgment_out"
-  description = "The s3 policy to allow lambda to read from the tdr transfer bucket"
-  policy      = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
-}
+#resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
+#  count      = var.env == "pte-ih" ? 1 : 0
+#  role       = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier.name
+#  policy_arn = aws_iam_policy.editorial_judgment_out_copier_buckets_access_policy.arn
+#}
+#
+#resource "aws_iam_policy" "editorial_judgment_out_copier_buckets_access_policy" {
+#  count       = var.env == "pte-ih" ? 1 : 0
+#  name        = "${var.env}-${var.prefix}-editorial_judgment_out"
+#  description = "The s3 policy to allow lambda to read from the tdr transfer bucket"
+#  policy      = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
+#}
 
 data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
   statement {
