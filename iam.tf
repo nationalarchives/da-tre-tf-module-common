@@ -98,25 +98,35 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::prod-tre-editorial-judgment-out/*",
       "arn:aws:s3:::prod-tre-editorial-judgment-out"
     ]
-  }
+  },
   statement {
     actions = [
-      "s3:PutObject",
-      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:ListBucket"
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input/*",
-      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input",
-      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input/*",
-      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input",
-      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input/*",
-      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input"
+      "arn:aws:s3:::prod-tre-editorial-judgment-out/*"
+
     ]
   }
+#  statement {
+#    actions = [
+#      "s3:PutObject",
+#      "s3:ListBucket",
+#    ]
+#    effect = "Allow"
+#    resources = [
+#      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input/*",
+#      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input",
+#      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input/*",
+#      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input",
+#      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input/*",
+#      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input"
+#    ]
+#  }
 #  statement {
 #    effect = "Allow"
 #    actions = [
