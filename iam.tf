@@ -88,13 +88,13 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_assume_role_policy
 }
 
 resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
-  depends_on = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier
+  depends_on = [ "aws_iam_role.dri_prod_tre_editorial_judgment_out_copier" ]
   role       = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier.name
   policy_arn = aws_iam_policy.editorial_judgment_out_copier_buckets_access_policy.arn
 }
 
 resource "aws_iam_policy" "editorial_judgment_out_copier_buckets_access_policy" {
-  depends_on  = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier
+  depends_on  = [ "aws_iam_role.dri_prod_tre_editorial_judgment_out_copier" ]
   name        = "${var.env}-${var.prefix}-editorial_judgment_out"
   description = "The s3 policy to allow lambda to read from the tdr transfer bucket"
   policy      = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
