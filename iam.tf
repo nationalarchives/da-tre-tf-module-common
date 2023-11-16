@@ -100,7 +100,7 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     resources = [
       "arn:aws:s3:::prod-tre-editorial-judgment-out"
     ]
-  },
+  }
   statement {
     actions = [
       "s3:GetObject",
