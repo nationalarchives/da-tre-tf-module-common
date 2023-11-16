@@ -65,9 +65,9 @@ resource "aws_iam_role" "failure_destination_lambda" {
 }
 
 resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
-  count = var.env == "pte-ih" ? 1 : 0
-  name  = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
-  assume_role_policy   = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
+  count              = var.env == "pte-ih" ? 1 : 0
+  name               = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
+  assume_role_policy = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
 }
 
 #resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
@@ -122,8 +122,10 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     ]
   }
   statement {
-    effect  = "Allow"
-    actions = "sts:AssumeRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
     principals {
       type = "AWS"
       identifiers = [
