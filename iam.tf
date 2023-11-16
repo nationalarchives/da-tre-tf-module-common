@@ -67,22 +67,38 @@ resource "aws_iam_role" "failure_destination_lambda" {
 resource "aws_iam_role" "dri_prod_tre_editorial_judgment_out_copier" {
   count              = var.env == "pte-ih" ? 1 : 0
   name               = "${var.env}-${var.prefix}-editorial-judgment-out-copier"
-  assume_role_policy = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
+  assume_role_policy = data.aws_iam_policy_document.editorial_judgment_out_copier_assume_role_policy.json
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
-#resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
-#  count      = var.env == "pte-ih" ? 1 : 0
-#  role       = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier.name
-#  policy_arn = aws_iam_policy.editorial_judgment_out_copier_buckets_access_policy.arn
-#}
-#
-#resource "aws_iam_policy" "editorial_judgment_out_copier_buckets_access_policy" {
-#  count       = var.env == "pte-ih" ? 1 : 0
-#  name        = "${var.env}-${var.prefix}-editorial_judgment_out"
-#  description = "The s3 policy to allow lambda to read from the tdr transfer bucket"
-#  policy      = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
-#}
+data "aws_iam_policy_document" "editorial_judgment_out_copier_assume_role_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::059334750967:role/intg-copy-from-tre-bucket-role",
+        "arn:aws:iam::897688892737:role/staging-copy-from-tre-bucket-role"
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "editorial_judgment_out_copier_buckets" {
+  count      = var.env == "pte-ih" ? 1 : 0
+  role       = aws_iam_role.dri_prod_tre_editorial_judgment_out_copier.name
+  policy_arn = aws_iam_policy.editorial_judgment_out_copier_buckets_access_policy.arn
+}
+
+resource "aws_iam_policy" "editorial_judgment_out_copier_buckets_access_policy" {
+  count       = var.env == "pte-ih" ? 1 : 0
+  name        = "${var.env}-${var.prefix}-editorial_judgment_out"
+  description = "The s3 policy to allow lambda to read from the tdr transfer bucket"
+  policy      = data.aws_iam_policy_document.editorial_judgment_out_copier_access_policy.json
+}
 
 data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
   statement {
@@ -92,59 +108,36 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::da-transform-sample-data"
+      "arn:aws:s3:::prod-tre-editorial-judgment-out/*",
+      "arn:aws:s3:::prod-tre-editorial-judgment-out"
     ]
   }
   statement {
     actions = [
-      "s3:GetObject",
-      "s3:ListBucket"
+      "s3:PutObject",
+      "s3:ListBucket",
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::da-transform-sample-data/*"
-
+      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input/*",
+      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input",
+      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input/*",
+      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input",
+      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input/*",
+      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input"
     ]
   }
-#  statement {
-#    actions = [
-#      "s3:PutObject",
-#      "s3:ListBucket",
-#    ]
-#    effect = "Allow"
-#    resources = [
-#      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input/*",
-#      "arn:aws:s3:::prod-ingest-parsed-court-document-test-input",
-#      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input/*",
-#      "arn:aws:s3:::intg-ingest-parsed-court-document-test-input",
-#      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input/*",
-#      "arn:aws:s3:::staging-ingest-parsed-court-document-test-input"
-#    ]
-#  }
-#  statement {
-#    effect = "Allow"
-#    actions = [
-#      "kms:GenerateDataKey",
-#      "kms:Decrypt"
-#    ]
-#    resources = [
-#      "arn:aws:kms:eu-west-2:059334750967:key/37b61f81-99ad-43f0-b00b-b9bbb000cdaf",
-#      "arn:aws:kms:eu-west-2:897688892737:key/9b0dd233-c792-4ba6-b260-844d73c9f65c"
-#    ]
-#  }
-#  statement {
-#    effect = "Allow"
-#    actions = [
-#      "sts:AssumeRole"
-#    ]
-#    principals {
-#      type = "AWS"
-#      identifiers = [
-#        "arn:aws:iam::059334750967:role/intg-copy-from-tre-bucket-role",
-#        "arn:aws:iam::897688892737:role/staging-copy-from-tre-bucket-role"
-#      ]
-#    }
-#  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt"
+    ]
+    resources = [
+      "arn:aws:kms:eu-west-2:059334750967:key/37b61f81-99ad-43f0-b00b-b9bbb000cdaf",
+      "arn:aws:kms:eu-west-2:897688892737:key/9b0dd233-c792-4ba6-b260-844d73c9f65c"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "failure_destination_lambda_logs" {
