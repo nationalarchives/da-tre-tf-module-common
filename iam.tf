@@ -101,12 +101,12 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
       ]
     )
     content {
-      sid     = "da-event-bus-client-${statement.value}"
+      sid = "da-event-bus-client-${statement.value}"
       actions = [
         "sns:Publish",
         "sns:Subscribe"
       ]
-      effect  = "Allow"
+      effect = "Allow"
       principals {
         type        = "AWS"
         identifiers = [statement.value]
@@ -116,12 +116,12 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
   }
 
   statement {
-    sid     = "account-${var.env}-eventbus-client"
+    sid = "account-${var.env}-eventbus-client"
     actions = [
       "sns:Publish",
       "sns:Subscribe"
     ]
-    effect  = "Allow"
+    effect = "Allow"
     principals {
       type        = "AWS"
       identifiers = [var.account_id]
@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
   dynamic "statement" {
     for_each = toset(var.da_eventbus_client_account_ids)
     content {
-      sid     = "da-event-bus-key-policy-${statement.value}"
+      sid = "da-event-bus-key-policy-${statement.value}"
       actions = [
         "kms:Decrypt",
         "kms:Encrypt",
@@ -155,7 +155,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     actions = ["kms:*"]
     effect  = "Allow"
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = concat([
         "arn:aws:iam::${var.account_id}:root",
         aws_iam_role.success_destination_lambda.arn,

@@ -11,6 +11,6 @@ resource "aws_kms_alias" "da_eventbus" {
 }
 
 resource "aws_kms_key_policy" "da_eventbus_policy" {
-  key_id    = aws_kms_key.da_eventbus.key_id
+  key_id = aws_kms_key.da_eventbus.key_id
   policy = data.aws_iam_policy_document.da_eventbus_kms_key.json
 }
