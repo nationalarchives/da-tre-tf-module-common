@@ -64,7 +64,8 @@ data "aws_iam_policy_document" "editorial_judgment_out_copier_access_policy" {
     effect = "Allow"
     actions = [
       "kms:GenerateDataKey",
-      "kms:Decrypt"
+      "kms:Decrypt",
+      "kms:Encrypt"
     ]
     resources = var.kms_copier_destination_buckets
   }
