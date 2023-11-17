@@ -7,10 +7,10 @@ resource "aws_lambda_function" "common_tre_slack_alerts" {
   memory_size   = 1024
   environment {
     variables = {
-      "SLACK_WEBHOOK_URL" = var.slack_webhook_url
-      "ENV"               = var.env
-      "SLACK_CHANNEL"     = var.slack_channel
-      "SLACK_USERNAME"    = var.slack_username
+      "SLACK_WEBHOOK_URL"                   = var.slack_webhook_url
+      "ENV"                                 = var.env
+      "SLACK_CHANNEL"                       = var.slack_channel
+      "SLACK_USERNAME"                      = var.slack_username
       "NOTIFIABLE_SLACK_ENDPOINTS_ON_ERROR" = jsonencode(var.notifiable_slack_endpoints_on_error)
     }
   }

@@ -84,7 +84,7 @@ variable "ecr_uri_repo_prefix" {
 
 variable "da_eventbus_client_account_ids" {
   description = "Accounts that can use the da event bus"
-  type = list(string)
+  type        = list(string)
 }
 
 variable "da_eventbus_subscriptions" {
@@ -103,4 +103,14 @@ variable "da_eventbus_subscriptions" {
 variable "notifiable_slack_endpoints_on_error" {
   description = "Channel - webhook url key value pairs to post to in case of TRE errors"
   type        = map(string)
+}
+
+variable "dri_roles_for_copier_assume" {
+  description = "Roles allowed to assume v1 bucket copier role"
+  type        = list(string)
+}
+
+variable "kms_copier_destination_buckets" {
+  description = "KMS keys of bucket into which data is copied"
+  type        = list(string)
 }
