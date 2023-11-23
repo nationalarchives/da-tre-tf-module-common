@@ -16,7 +16,7 @@ resource "aws_kms_key_policy" "da_eventbus_policy" {
 }
 
 module "common_data_bucket_kms_key" {
-  source = "github.com/nationalarchives/da-terraform-modules//kms?ref=feature-DTE-915-add-permissions-boundary-argument"
+  source = "github.com/nationalarchives/da-terraform-modules//kms?ref=main"
   key_name = "${var.env}-${var.prefix}-common-data-kms"
   tags = {}
   default_policy_variables = {
