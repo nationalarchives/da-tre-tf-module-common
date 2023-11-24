@@ -105,6 +105,10 @@ variable "notifiable_slack_endpoints_on_error" {
   type        = map(string)
 }
 
+variable "kms_key_administration_role" {
+  description = "Role to administer kms keys"
+  type = string
+
 variable "dri_roles_for_copier_assume" {
   description = "Roles allowed to assume v1 bucket copier role"
   type        = list(string)
