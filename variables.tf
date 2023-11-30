@@ -119,3 +119,8 @@ variable "kms_copier_destination_buckets" {
   description = "KMS keys of bucket into which data is copied"
   type        = list(string)
 }
+
+variable "tre_support_user_roles" {
+  description = "ARNs of roles used for AWS console debugging of the TRE system"
+  type        = list(string)
+}
