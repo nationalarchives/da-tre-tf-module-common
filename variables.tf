@@ -20,8 +20,9 @@ variable "common_version" {
 variable "common_image_versions" {
   description = "Latest version of Images for Lambda Functions"
   type = object({
-    tre_slack_alerts     = string
-    tre_dlq_slack_alerts = string
+    tre_slack_alerts             = string
+    tre_dlq_slack_alerts         = string
+    tre_process_monitoring_queue = string
   })
 }
 variable "success_destination_image_versions" {
@@ -102,6 +103,11 @@ variable "da_eventbus_subscriptions" {
 
 variable "notifiable_slack_endpoints_on_error" {
   description = "Channel - webhook url key value pairs to post to in case of TRE errors"
+  type        = map(string)
+}
+
+variable "notifiable_slack_monitoring_endpoints" {
+  description = "Channel - webhook url key value pairs to post periodic monitoring updates"
   type        = map(string)
 }
 

@@ -90,3 +90,31 @@ resource "aws_lambda_function" "failure_destination" {
     "ApplicationType" = "Scala"
   }
 }
+
+resource "aws_lambda_function" "process_monitoring_queue" {
+  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}${var.prefix}-fn-process-monitoring-queue:${var.common_image_versions.tre_process_monitoring_queue}"
+  package_type  = "Image"
+  function_name = "${var.env}-${var.prefix}-process-monitoring-queue"
+  role          = aws_iam_role.common_tre_slack_alerts_lambda_role.arn
+  timeout       = 30
+  environment {
+    variables = {
+      "NOTIFIABLE_SLACK_MONITORING_ENDPOINTS" = jsonencode(var.notifiable_slack_monitoring_endpoints)
+      "MONITORING_QUEUE_ARN" = aws_sqs_queue.process_monitoring_queue.arn
+    }
+  }
+
+  tags = {
+    "ApplicationType" = "Scala"
+  }
+}
+
+resource "aws_cloudwatch_event_rule" "every_fifteen_minutes" {
+  name                = "every-fifteen-minutes"
+  schedule_expression = "cron(*/15 * * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "invoke_lambda" {
+  rule = aws_cloudwatch_event_rule.every_fifteen_minutes.name
+  arn  = aws_lambda_function.process_monitoring_queue.arn
+}
