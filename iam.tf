@@ -172,7 +172,7 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
   }
 }
 
-data "aws_iam_policy_document" "tre_court_document_parse_in_queue" {
+data "aws_iam_policy_document" "monitoring_queue" {
   statement {
     actions = ["sqs:SendMessage"]
     effect  = "Allow"
@@ -184,7 +184,7 @@ data "aws_iam_policy_document" "tre_court_document_parse_in_queue" {
 
     }
     resources = [
-      aws_sqs_queue.process_monitoring_queue.arn
+      aws_sqs_queue.monitoring_queue.arn
     ]
   }
 }
