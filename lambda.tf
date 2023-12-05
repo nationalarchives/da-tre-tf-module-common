@@ -95,7 +95,7 @@ resource "aws_lambda_function" "process_monitoring_queue" {
   image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}da-tre-fn-process-monitoring-queue:${var.common_image_versions.tre_process_monitoring_queue}"
   package_type  = "Image"
   function_name = "${var.env}-${var.prefix}-process-monitoring-queue"
-  role          = aws_iam_role.common_tre_slack_alerts_lambda_role.arn
+  role          = aws_iam_role.process_monitoring_queue_lambda_role.arn
   timeout       = 30
   environment {
     variables = {

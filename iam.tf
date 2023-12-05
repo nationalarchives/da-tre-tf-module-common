@@ -42,6 +42,30 @@ resource "aws_iam_role" "process_monitoring_queue_lambda_role" {
   permissions_boundary = var.tre_permission_boundary_arn
 }
 
+data "aws_iam_policy_document" "process_monitoring_queue_policy" {
+  statement {
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes"
+    ]
+
+    resources = [
+      "arn:aws:sqs:region:account-id:queue-name"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "process_monitoring_queue_policy" {
+  name   = "${var.env}-${var.prefix}-lambda-sqs-policy"
+  policy = data.aws_iam_policy_document.process_monitoring_queue_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_sqs_attach" {
+  role       = aws_iam_role.process_monitoring_queue_lambda_role.name
+  policy_arn = aws_iam_policy.process_monitoring_queue_policy.arn
+}
+
 resource "aws_iam_role" "tre_dlq_alerts_lambda" {
   name                 = "${var.env}-${var.prefix}-dlq-alerts-lambda"
   assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
