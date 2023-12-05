@@ -16,4 +16,3 @@ resource "aws_sqs_queue" "monitoring_queue_deadletter" {
   name                    = "${var.env}-${var.prefix}-monitoring-queue-deadletter"
   sqs_managed_sse_enabled = true
 }
-

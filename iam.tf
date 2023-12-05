@@ -181,7 +181,6 @@ data "aws_iam_policy_document" "monitoring_queue" {
       identifiers = [
         "sns.amazonaws.com"
       ]
-
     }
     resources = [
       aws_sqs_queue.monitoring_queue.arn

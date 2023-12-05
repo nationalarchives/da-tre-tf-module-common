@@ -35,5 +35,5 @@ output "failure_destination_lambda_arn" {
 
 output "monitoring_queue_arn" {
   value       = aws_sqs_queue.monitoring_queue.arn
-  description = "Failure destination Lambda ARN"
+  description = "Monitoring queue arn"
 }
