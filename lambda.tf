@@ -113,6 +113,14 @@ resource "aws_cloudwatch_event_rule" "every_fifteen_minutes" {
   schedule_expression = "cron(*/15 * * * ? *)"
 }
 
+resource "aws_lambda_permission" "allow_cloudwatch" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.process_monitoring_queue.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.every_fifteen_minutes.arn
+}
+
 resource "aws_cloudwatch_event_target" "invoke_lambda" {
   rule = aws_cloudwatch_event_rule.every_fifteen_minutes.name
   arn  = aws_lambda_function.process_monitoring_queue.arn
