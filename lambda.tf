@@ -92,7 +92,7 @@ resource "aws_lambda_function" "failure_destination" {
 }
 
 resource "aws_lambda_function" "process_monitoring_queue" {
-  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}${var.prefix}-fn-process-monitoring-queue:${var.common_image_versions.tre_process_monitoring_queue}"
+  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}da-tre-fn-process-monitoring-queue:${var.common_image_versions.tre_process_monitoring_queue}"
   package_type  = "Image"
   function_name = "${var.env}-${var.prefix}-process-monitoring-queue"
   role          = aws_iam_role.common_tre_slack_alerts_lambda_role.arn
@@ -109,7 +109,7 @@ resource "aws_lambda_function" "process_monitoring_queue" {
 }
 
 resource "aws_cloudwatch_event_rule" "every_fifteen_minutes" {
-  name                = "every-fifteen-minutes"
+  name                = "${var.env}-${var.prefix}-every-fifteen-minutes"
   schedule_expression = "cron(*/15 * * * ? *)"
 }
 
