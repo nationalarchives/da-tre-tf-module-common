@@ -32,3 +32,8 @@ output "failure_destination_lambda_arn" {
   value       = aws_lambda_function.failure_destination.arn
   description = "Failure destination Lambda ARN"
 }
+
+output "monitoring_queue_arn" {
+  value       = aws_sqs_queue.monitoring_queue.arn
+  description = "Failure destination Lambda ARN"
+}

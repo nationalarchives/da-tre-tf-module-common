@@ -100,7 +100,6 @@ resource "aws_lambda_function" "process_monitoring_queue" {
   environment {
     variables = {
       "NOTIFIABLE_SLACK_MONITORING_ENDPOINTS" = jsonencode(var.notifiable_slack_monitoring_endpoints)
-      "MONITORING_QUEUE_ARN" = aws_sqs_queue.process_monitoring_queue.arn
     }
   }
 
