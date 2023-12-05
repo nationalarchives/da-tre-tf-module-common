@@ -9,7 +9,7 @@ resource "aws_sqs_queue" "monitoring_queue" {
 
 resource "aws_sqs_queue_policy" "monitoring_queue" {
   queue_url = aws_sqs_queue.monitoring_queue.id
-  policy    = data.aws_iam_policy_document.tre_court_document_parse_in_queue.json
+  policy    = data.aws_iam_policy_document.monitoring_queue.json
 }
 
 resource "aws_sqs_queue" "monitoring_queue_deadletter" {
