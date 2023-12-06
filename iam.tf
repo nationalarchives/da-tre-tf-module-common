@@ -60,9 +60,14 @@ resource "aws_iam_policy" "process_monitoring_queue_policy" {
   policy = data.aws_iam_policy_document.process_monitoring_queue_policy.json
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_sqs_attach" {
+resource "aws_iam_role_policy_attachment" "process_monitoring_queue_sqs" {
   role       = aws_iam_role.process_monitoring_queue_lambda_role.name
   policy_arn = aws_iam_policy.process_monitoring_queue_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "process_monitoring_queue_logs" {
+  role       = aws_iam_role.process_monitoring_queue_lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSOpsWorksCloudWatchLogs"
 }
 
 resource "aws_iam_role" "tre_dlq_alerts_lambda" {
