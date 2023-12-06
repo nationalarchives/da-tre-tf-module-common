@@ -49,15 +49,14 @@ data "aws_iam_policy_document" "process_monitoring_queue_policy" {
       "sqs:DeleteMessage",
       "sqs:GetQueueAttributes"
     ]
-
     resources = [
-      "arn:aws:sqs:region:account-id:queue-name"
+      aws_sqs_queue.monitoring_queue.arn
     ]
   }
 }
 
 resource "aws_iam_policy" "process_monitoring_queue_policy" {
-  name   = "${var.env}-${var.prefix}-lambda-sqs-policy"
+  name   = "${var.env}-${var.prefix}-process-monitoring-queue-policy"
   policy = data.aws_iam_policy_document.process_monitoring_queue_policy.json
 }
 
