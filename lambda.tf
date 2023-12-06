@@ -96,6 +96,7 @@ resource "aws_lambda_function" "process_monitoring_queue" {
   package_type  = "Image"
   function_name = "${var.env}-${var.prefix}-process-monitoring-queue"
   role          = aws_iam_role.process_monitoring_queue_lambda_role.arn
+  memory_size   = 1024
   timeout       = 30
   environment {
     variables = {
