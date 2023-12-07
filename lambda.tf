@@ -90,3 +90,40 @@ resource "aws_lambda_function" "failure_destination" {
     "ApplicationType" = "Scala"
   }
 }
+
+resource "aws_lambda_function" "process_monitoring_queue" {
+  image_uri     = "${var.ecr_uri_host}/${var.ecr_uri_repo_prefix}da-tre-fn-process-monitoring-queue:${var.common_image_versions.tre_process_monitoring_queue}"
+  package_type  = "Image"
+  function_name = "${var.env}-${var.prefix}-process-monitoring-queue"
+  role          = aws_iam_role.process_monitoring_queue_lambda_role.arn
+  memory_size   = 1024
+  timeout       = 30
+  environment {
+    variables = {
+      "NOTIFIABLE_SLACK_MONITORING_ENDPOINTS" = jsonencode(var.notifiable_slack_monitoring_endpoints)
+      "MONITORING_QUEUE_ARN" = aws_sqs_queue.monitoring_queue.arn
+    }
+  }
+
+  tags = {
+    "ApplicationType" = "Scala"
+  }
+}
+
+resource "aws_cloudwatch_event_rule" "every_day_at_4_am_gmt" {
+  name                = "${var.env}-${var.prefix}-every-day-at-4-am-gmt"
+  schedule_expression = "cron(0 4 * * ? *)"
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.process_monitoring_queue.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.every_day_at_4_am_gmt.arn
+}
+
+resource "aws_cloudwatch_event_target" "invoke_lambda" {
+  rule = aws_cloudwatch_event_rule.every_day_at_4_am_gmt.name
+  arn  = aws_lambda_function.process_monitoring_queue.arn
+}
