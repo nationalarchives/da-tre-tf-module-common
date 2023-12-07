@@ -110,9 +110,9 @@ resource "aws_lambda_function" "process_monitoring_queue" {
   }
 }
 
-resource "aws_cloudwatch_event_rule" "every_day_at_7_am_gmt" {
-  name                = "${var.env}-${var.prefix}-every-day-at-7-am-gmt"
-  schedule_expression = "cron(0 7 * * ? *)"
+resource "aws_cloudwatch_event_rule" "every_day_at_4_am_gmt" {
+  name                = "${var.env}-${var.prefix}-every-day-at-4-am-gmt"
+  schedule_expression = "cron(0 4 * * ? *)"
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch" {
@@ -120,10 +120,10 @@ resource "aws_lambda_permission" "allow_cloudwatch" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.process_monitoring_queue.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.every_day_at_7_am_gmt.arn
+  source_arn    = aws_cloudwatch_event_rule.every_day_at_4_am_gmt.arn
 }
 
 resource "aws_cloudwatch_event_target" "invoke_lambda" {
-  rule = aws_cloudwatch_event_rule.every_day_at_7_am_gmt.name
+  rule = aws_cloudwatch_event_rule.every_day_at_4_am_gmt.name
   arn  = aws_lambda_function.process_monitoring_queue.arn
 }
