@@ -1,17 +1,3 @@
-# SNS Policies
-
-data "aws_iam_policy_document" "common_tre_slack_alerts_sns_topic_policy" {
-  statement {
-    actions = ["sns:Publish"]
-    effect  = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = var.tre_slack_alerts_publishers
-    }
-    resources = [aws_sns_topic.common_tre_slack_alerts.arn]
-  }
-}
-
 # Lambda Policies
 
 resource "aws_iam_role" "common_tre_slack_alerts_lambda_role" {

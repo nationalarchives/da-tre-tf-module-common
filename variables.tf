@@ -38,11 +38,6 @@ variable "failure_destination_image_versions" {
   })
 }
 
-variable "tre_slack_alerts_publishers" {
-  description = "Roles that have permission to publish messages to tre-slack-alerts topic"
-  type        = list(string)
-}
-
 variable "tre_data_bucket_write_access" {
   description = "Roles that have write access to tre-data-bucket"
   type        = list(string)
