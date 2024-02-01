@@ -1,13 +1,3 @@
-resource "aws_sns_topic" "common_tre_slack_alerts" {
-  name              = "${var.env}-${var.prefix}-common-slack-alerts"
-  kms_master_key_id = "alias/aws/sns"
-}
-
-resource "aws_sns_topic_policy" "common_tre_slack_alerts" {
-  arn    = aws_sns_topic.common_tre_slack_alerts.arn
-  policy = data.aws_iam_policy_document.common_tre_slack_alerts_sns_topic_policy.json
-}
-
 resource "aws_sns_topic_subscription" "common_tre_slack_alerts" {
   topic_arn = aws_sns_topic.da_eventbus.arn
   protocol  = "lambda"
