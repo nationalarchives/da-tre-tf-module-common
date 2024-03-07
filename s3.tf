@@ -20,7 +20,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "common_tre_data" 
 resource "aws_s3_bucket_versioning" "common_tre_data" {
   bucket = aws_s3_bucket.common_tre_data.id
   versioning_configuration {
-    status = var.limit_s3_data_retention ? "Disabled" : "Enabled"
+    status = var.limit_s3_data_retention ? "Suspended" : "Enabled"
   }
 }
 
