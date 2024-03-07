@@ -126,7 +126,7 @@ variable "tre_support_user_roles" {
   type        = list(string)
 }
 
-variable "limit_data_retention" {
+variable "limit_s3_data_retention" {
   description = "Whether s3 bucket data retention should be limited in this module"
   type        = bool
 }
