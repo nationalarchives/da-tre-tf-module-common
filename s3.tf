@@ -20,7 +20,18 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "common_tre_data" 
 resource "aws_s3_bucket_versioning" "common_tre_data" {
   bucket = aws_s3_bucket.common_tre_data.id
   versioning_configuration {
-    status = "Enabled"
+    status = var.limit_data_retention ? "Enabled" : "Disabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "common_tre_data" {
+  bucket = aws_s3_bucket.common_tre_data.id
+  rule {
+    id = "${aws_s3_bucket.common_tre_data.id}-expiry"
+    expiration {
+      days = 7
+    }
+    status = var.limit_data_retention ? "Enabled" : "Disabled"
   }
 }
 

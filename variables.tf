@@ -125,3 +125,8 @@ variable "tre_support_user_roles" {
   description = "ARNs of roles used for AWS console debugging of the TRE system"
   type        = list(string)
 }
+
+variable "limit_data_retention" {
+  description = "Whether s3 bucket data retention should be limited in this module"
+  type        = bool
+}
