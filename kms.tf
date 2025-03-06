@@ -16,7 +16,7 @@ resource "aws_kms_key_policy" "da_eventbus_policy" {
 }
 
 module "common_data_bucket_kms_key" {
-  source   = "github.com/nationalarchives/da-terraform-modules//kms?ref=9518c81"
+  source   = "github.com/nationalarchives/da-terraform-modules//kms?ref=eea43cd"
   key_name = "${var.env}-${var.prefix}-common-data-kms"
   tags     = {}
   default_policy_variables = {
