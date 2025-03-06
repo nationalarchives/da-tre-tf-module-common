@@ -130,3 +130,9 @@ variable "limit_s3_data_retention" {
   description = "Whether s3 bucket data retention should be limited in this module"
   type        = bool
 }
+
+variable "wiz_access_roles" {
+  description = "ARNs of wiz roles used to allow scanning of all the resources in the TRE system"
+  type        = list(string)
+  default     = []
+}

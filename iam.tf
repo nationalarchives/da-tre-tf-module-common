@@ -184,6 +184,24 @@ data "aws_iam_policy_document" "da_eventbus_kms_key" {
     }
     resources = ["*"]
   }
+
+  dynamic "statement" {
+    for_each = length(var.wiz_access_roles) == 0 ? [] : ["wiz_access_roles"]
+    content {
+      sid = "Allow access for Wiz"
+      principals {
+        type        = "AWS"
+        identifiers = var.wiz_access_roles
+      }
+      actions = [
+        "kms:Describe*",
+        "kms:Decrypt",
+        "kms:CreateGrant",
+        "kms:GenerateDataKey"
+      ]
+      resources = ["*"]
+    }
+  }
 }
 
 data "aws_iam_policy_document" "monitoring_queue" {
