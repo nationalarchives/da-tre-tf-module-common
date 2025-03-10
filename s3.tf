@@ -12,7 +12,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "common_tre_data" 
   rule {
     apply_server_side_encryption_by_default {
       kms_master_key_id = module.common_data_bucket_kms_key.kms_key_alias
-      sse_algorithm = "aws:kms"
+      sse_algorithm     = "aws:kms"
     }
   }
 }
