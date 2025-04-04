@@ -124,7 +124,8 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
       sid = "da-event-bus-client-${statement.value}"
       actions = [
         "sns:Publish",
-        "sns:Subscribe"
+        "sns:Subscribe",
+        "sns:List*"
       ]
       effect = "Allow"
       principals {
@@ -139,7 +140,8 @@ data "aws_iam_policy_document" "da_eventbus_topic_policy" {
     sid = "account-${var.env}-eventbus-client"
     actions = [
       "sns:Publish",
-      "sns:Subscribe"
+      "sns:Subscribe",
+      "sns:List*"
     ]
     effect = "Allow"
     principals {
