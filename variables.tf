@@ -111,11 +111,6 @@ variable "kms_key_administration_role" {
   type        = string
 }
 
-variable "dri_roles_for_copier_assume" {
-  description = "Roles allowed to assume v1 bucket copier role"
-  type        = list(string)
-}
-
 variable "kms_copier_destination_buckets" {
   description = "KMS keys of bucket into which data is copied"
   type        = list(string)
