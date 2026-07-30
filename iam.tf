@@ -106,6 +106,18 @@ data "aws_iam_policy_document" "common_tre_data_bucket" {
 
     resources = ["${aws_s3_bucket.common_tre_data.arn}/*", aws_s3_bucket.common_tre_data.arn]
   }
+  statement {
+    actions = [
+      "s3:GetObject"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = var.external_common_bucket_readers
+    }
+
+    resources = ["${aws_s3_bucket.common_tre_data.arn}/*", aws_s3_bucket.common_tre_data.arn]
+  }
 }
 
 # KMS Key Policy

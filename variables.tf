@@ -131,3 +131,9 @@ variable "wiz_access_roles" {
   type        = list(string)
   default     = []
 }
+
+variable "external_common_bucket_readers" {
+  description = "The accounts that are allowed to read from the common bucket"
+  type        = list(string)
+  default     = []
+}
